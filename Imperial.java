@@ -26,41 +26,53 @@ public class Imperial extends Personaje {
 	 */
 	public Imperial(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal) {
 
-		super(nombre, marcaId, turno, idEstacion);
+		super(nombre, marcaId, turno, idEstacion, gal);
 		setTipoPj("Imperial");
 		System.out.println("Personaje " + getNombrePersonaje() + " creado.");
 
 		for (int i = 1; i <= 29; i = i + 2) {
 
-			pilaMidi.add(new Midi(i)); // Los imperiales tienen una pila de
+			aniadirMidi(new Midi(i)); // Los imperiales tienen una pila de
 										// midiclorianos del 1 al 29 saltandose
 										// los pares
 		}
-		HallarCamino(gal);
 	}
 
 	@Override
-	public void HallarCamino(Galaxia gal) {
+	public void hallarCamino(Galaxia gal) {
+		
 		Grafo grafoAux = gal.getGrafoGal();
+		
 		List<Integer> listaAux = new LinkedList<Integer>();
-		listaAux = grafoAux.encontrarCaminoList(gal.getAncho() - 1, -1, 0, listaAux);
+		
+		
 		int dirAnt, dirSig;
 		dirAnt = gal.getId_salida();
+		
+		listaAux = grafoAux.encontrarCaminoList(gal.getAncho() - 1, -1, 0, listaAux);
+		
 		while (listaAux.isEmpty() == false) {
+			
 			dirSig = listaAux.remove(0);
-			camino.add(interpretarCamino(dirAnt,dirSig));
+			aniadirCamino(interpretarCamino(dirAnt,dirSig));
 			dirAnt = dirSig;
 		}
+		
 		listaAux = grafoAux.encontrarCaminoList(0, -1, grafoAux.getNumNodos() - gal.getAncho(), listaAux);
+		
 		while (listaAux.isEmpty() == false) {
+			
 			dirSig = listaAux.remove(0);
-			camino.add(interpretarCamino(dirAnt,dirSig));
+			aniadirCamino(interpretarCamino(dirAnt,dirSig));
 			dirAnt = dirSig;
 		}
+		
 		listaAux = grafoAux.encontrarCaminoList(grafoAux.getNumNodos() - gal.getAncho(), -1, grafoAux.getNumNodos() - 1, listaAux);
+		
 		while (listaAux.isEmpty() == false) {
+			
 			dirSig = listaAux.remove(0);
-			camino.add(interpretarCamino(dirAnt,dirSig));
+			aniadirCamino(interpretarCamino(dirAnt,dirSig));
 			dirAnt = dirSig;
 		}
 	}

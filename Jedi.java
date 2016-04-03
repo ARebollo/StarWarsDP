@@ -1,5 +1,6 @@
 package DEV;
 
+import java.util.*;
 /**
 * Declaracion de la clase Jedi
 * @author
@@ -18,16 +19,29 @@ public class Jedi extends Personaje{
 	 	* @param idEstacion Estacion en la que se encuentra el personaje
 	 	* 
 	 	*/
-        public Jedi(String nombre, char marcaId, int turno, int idEstacion){
+        public Jedi(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal){
         	
-            super(nombre, marcaId, turno, idEstacion);
+            super(nombre, marcaId, turno, idEstacion, gal);
             setTipoPj("Jedi");
             System.out.println("Personaje " + getNombrePersonaje() +" creado.");
         }
 
 	@Override
-	public void HallarCamino(Galaxia gal) {
-		// TODO Auto-generated method stub
+	public void hallarCamino(Galaxia gal) {
+		
+		List<Integer> listaAux = new LinkedList<Integer>();
+		Grafo grafoAux = gal.getGrafoGal();
+		
+		listaAux= grafoAux.manoDerecha(0, gal.getId_salida(), gal.getAncho());
+		int dirAnt = 0;
+		int dirSig;
+		
+		while (listaAux.isEmpty() == false) {
+			
+			dirSig = listaAux.remove(0);
+			aniadirCamino(interpretarCamino(dirAnt,dirSig));
+			dirAnt = dirSig;
+		}
 		
 	}
 

@@ -14,8 +14,8 @@ public class Estacion implements Comparable<Estacion> {
 	private int id;
 	private int frecuencia;
 	private boolean puertaSalida;
-    List<Midi> listaMidiEst;
-	Queue<Personaje> colaPers;
+    private List<Midi> listaMidiEst;
+	private Queue<Personaje> colaPers;
 	
 	/**
    	 * Constructor default de la clase Estacion
