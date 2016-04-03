@@ -1159,11 +1159,12 @@ public class Galaxia {
 			datosAFichero(n, false);
 		}
 
-		// La simulacion ha terminado
+		mostrarFin();
+	}
+	
 
-		datosAFichero(n, true); // Mandamos un mensaje diferente para cuando ha
-								// terminado la simulacion
-
+	private void mostrarFin() {
+		
 		System.out.println();
 		System.out.println("---------------------------");
 		System.out.println("La simulación ha terminado|");
@@ -1357,8 +1358,7 @@ public class Galaxia {
 		System.out.println("Ganadores:");
 		System.out.println("-------------------------------------------");
 
-		if (puertaGal.isEstado() == true) // Si puerta abierta, ganan los
-											// rebeldes
+		if (puertaGal.isEstado() == true) 
 		{
 
 			Iterator<Personaje> it = buscarEstacion(id_salida).colaPers.iterator();
@@ -1370,7 +1370,8 @@ public class Galaxia {
 				System.out.println(persAux.toString());
 			}
 
-		} else // Si puerta cerrada, los imperiales
+		} 
+		else 
 		{
 			for (int i = 0; i < alto; i++) {
 
@@ -1391,7 +1392,7 @@ public class Galaxia {
 
 		System.out.println("-------------------------------------------");
 	}
-
+	
 	public static void main(String[] args) {
 
 		Galaxia pepe;
@@ -1408,59 +1409,59 @@ public class Galaxia {
 
 	}
 
-	protected Grafo getGrafoGal() {
+	public Grafo getGrafoGal() {
 		return grafoGal;
 	}
 
-	protected void setGrafoGal(Grafo grafoGal) {
+	public void setGrafoGal(Grafo grafoGal) {
 		this.grafoGal = grafoGal;
 	}
 
-	protected int getAlto() {
+	public int getAlto() {
 		return alto;
 	}
 
-	protected void setAlto(int alto) {
+	public void setAlto(int alto) {
 		this.alto = alto;
 	}
 
-	protected int getAncho() {
+	public int getAncho() {
 		return ancho;
 	}
 
-	protected void setAncho(int ancho) {
+	public void setAncho(int ancho) {
 		this.ancho = ancho;
 	}
 
-	protected int getId_salida() {
+	public int getId_salida() {
 		return id_salida;
 	}
 
-	protected void setId_salida(int id_salida) {
+	public void setId_salida(int id_salida) {
 		this.id_salida = id_salida;
 	}
 
-	protected Puerta getPuertaGal() {
+	public Puerta getPuertaGal() {
 		return puertaGal;
 	}
 
-	protected void setPuertaGal(Puerta puertaGal) {
+	public void setPuertaGal(Puerta puertaGal) {
 		this.puertaGal = puertaGal;
 	}
 
-	protected Estacion[][] getListaEstaciones() {
+	public Estacion[][] getListaEstaciones() {
 		return listaEstaciones;
 	}
 
-	protected void setListaEstaciones(Estacion[][] listaEstaciones) {
+	public void setListaEstaciones(Estacion[][] listaEstaciones) {
 		this.listaEstaciones = listaEstaciones;
 	}
 
-	protected Queue<Midi> getListaMidiGal() {
+	public Queue<Midi> getListaMidiGal() {
 		return listaMidiGal;
 	}
 
-	protected void setListaMidiGal(Queue<Midi> listaMidiGal) {
+	public void setListaMidiGal(Queue<Midi> listaMidiGal) {
 		this.listaMidiGal = listaMidiGal;
 	}
 }

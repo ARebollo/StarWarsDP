@@ -478,6 +478,8 @@ public class Grafo {
       * @return Devuelve el camino en forma de cadena
       * 
       */
+      
+      // TODO BORRAR
       private String encontrarCamino(int i, int x, int k){
       
      	 String aux = "";
@@ -513,6 +515,7 @@ public class Grafo {
        * @param i Es el nodo actual, en la primera llamada es el inicial
        * @param x Es el nodo del que viene, para no volver hacia atrás
        * @param k Es el nodo al que se desea llegar
+       * @param Camino camino que se devuelve
        * 
        * @return Devuelve el camino en forma de lista de enteros
        * 
@@ -551,7 +554,7 @@ public class Grafo {
       * @return El camino seguido en forma de Lista de enteros
       * 
       */
-      private List<Integer> manoDerecha (int i, int j, int ancho){
+      protected List<Integer> manoDerecha (int i, int j, int ancho){
           int anterior = i;
           boolean fin = false;
           List<Integer> camino = new LinkedList<Integer>();
@@ -752,101 +755,6 @@ public class Grafo {
         return camino;
       }
       
-     /**
-      * Metodo que interpretar el camino devuelto por los metodos encontrarCamino y manoDerecha, transformando los resultados en una cola de "dir" para los personajes 
-      *
-      * @param ancho Anchura de la galaxia
-      * 
-      * @return Cola de tipo "dir"
-      * 
-      * @throws PersNoValido 
-      * 
-      */
-      public Queue<dir> asignarCamino(int ancho, String pj, int puertaGal) throws PersNoValido{
-      //TODO Esto pasarlo a cada personaje, que solamente llamen a encontrarCamino o a manoDerecha, aunque antes se arregla  
-    	  List<Integer> aux; 
-    	  int actual = 0; // Marcador del nodo actual
-    	  int sig = 0; // Marcador del nodo al que vamos
-    	  Queue<dir> camino = new LinkedList<dir>();  // Para almacenar la ruta 
-    	  //TODO este switch es un metodo Virtual en Personaje
-    	  switch (pj)
-    	  {
-    	  case ("FamiliaReal"):
-    	   aux = new LinkedList<Integer>();	  
-    	   aux = encontrarCaminoList (0, -1, puertaGal, aux);  // Obtener el camino de esquina arriba izquierda a la puerta de salida
-    	  break;
-    	  
-    	  case ("Jedi"):
-    	   aux = manoDerecha (0, puertaGal, ancho);  // Obtener el camino de esquina arriba izquierda a la puerta de salida utilizando el metodo de la mano derecha
-    	  break;
-    	  
-    	  case ("Contrabandista"):
-       	   aux = manoDerecha (getNumNodos()-ancho, puertaGal, ancho);  // Obtener el camino de esquina inferior izquierda a la puerta de salida utilizando el metodo de la mano derecha
-    	   actual = getNumNodos()-ancho;  // Nodo de salida del pj
-       	  break;
-       	  
-    	  case ("Imperial"):
-    	   aux = new LinkedList<Integer>();
-    	   aux = encontrarCaminoList (getNumNodos()-1, -1, ancho-1,aux);
-    	   List<Integer> auxImp = new LinkedList<Integer>();
-    	   auxImp = encontrarCaminoList(ancho-1, -1, 0, auxImp);
-    	   while (auxImp.isEmpty() == false)
-    	   {
-    		   aux.add(auxImp.remove(0));
-    	   }
-    	   auxImp = encontrarCaminoList(0, -1, getNumNodos()-ancho,auxImp);
-    	   while (auxImp.isEmpty() == false)
-    	   {
-    		   aux.add(auxImp.remove(0));
-    	   }
-    	   auxImp = encontrarCaminoList(getNumNodos()-ancho,-1,getNumNodos()-1, auxImp);
-    	   while (auxImp.isEmpty() == false)
-    	   {
-    		   aux.add(auxImp.remove(0));
-    	   }
-    	   actual = getNumNodos()-1;  // Nodo de salida del pj 
-    	   break;
-    	  
-    	  default:
-    		  throw new PersNoValido("Error, tipo de personaje no reconocido, imposible asignar ruta");
-    	  }     	
-    	     	   
-    	  //TODO esto tiene que hacerlo cada PJ, aunque el metodo no deberia ser virtual, ya que el procedimiento es el mismo
-    	  // Interpretar movimientos
-    	  for (int i = 0; i < aux.size(); i++){
-    		  
-    		  sig = aux.get(i);  // El nodo al que vamos
-    		  
-    		  if ((sig - actual) == ancho)
-    		  {
-    		   camino.add(dir.S);
-    		   actual = sig;
-    		  }
-    		  
-    		  if ((sig - actual) == -ancho)
-    		  {
-    		   camino.add(dir.N);
-    		   actual = sig;
-    		  }
-    		  
-    		  if ((sig - actual) == 1 && ancho != 1)
-    		  {
-    		   camino.add(dir.E);
-    		   actual = sig;
-    		  }
-    		  
-    		  if ((sig - actual) == -1 && ancho != 1)
-    		  {
-    		   camino.add(dir.O);
-    		   actual = sig;
-    		  } 			  
-    		  
-    	  }
-    	  
-      return camino; 
-    }
-    
-      
    /**
     * Metodo que devuelve la ruta de los FamiliaReal en un vector de enteros
     *
@@ -877,7 +785,9 @@ public class Grafo {
      * 
      */
     public List<Pair<Integer,Integer>> devolverArcos(){
+    	
     	List<Pair<Integer,Integer>> listaArcos = new LinkedList<Pair<Integer,Integer>>();
+    	
     	for (int i = 0; i < getNumNodos(); i++){
     		
     		for (int j = i; j < getNumNodos(); j++){  // Solo diagonal superior

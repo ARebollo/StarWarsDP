@@ -1,5 +1,8 @@
 package DEV;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
 * Declaracion de la clase Contrabandista
 * @author
@@ -18,16 +21,29 @@ public class Contrabandista extends Personaje {
    	 	* @param idEstacion Estacion en la que se encuentra el personaje
    	 	* 
    	 	*/
-        public Contrabandista(String nombre, char marcaId, int turno, int idEstacion){
+        public Contrabandista(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal){
         	
-        	super(nombre, marcaId, turno, idEstacion);
+        	super(nombre, marcaId, turno, idEstacion, gal);
             setTipoPj("Contrabandista");
             System.out.println("Personaje " + getNombrePersonaje() +" creado.");
         }
 
 	@Override
-	public void HallarCamino(Galaxia gal) {
-		// TODO Auto-generated method stub
+	public void hallarCamino(Galaxia gal) {
+		
+		List<Integer> listaAux = new LinkedList<Integer>();
+		Grafo grafoAux = gal.getGrafoGal();
+		
+		listaAux= grafoAux.manoDerecha(gal.getAlto() * gal.getAncho() - gal.getAncho(), gal.getId_salida(), gal.getAncho());
+		int dirAnt = 0;
+		int dirSig;
+		
+		while (listaAux.isEmpty() == false) {
+			
+			dirSig = listaAux.remove(0);
+			aniadirCamino(interpretarCamino(dirAnt,dirSig));
+			dirAnt = dirSig;
+		}
 		
 	}
 

@@ -20,8 +20,8 @@ public abstract class Personaje {
         private int turno;
         private int turnoActual;
         private boolean haMovido;
-        Queue<dir> camino;
-        LinkedList<Midi> pilaMidi;
+        private Queue<dir> camino;
+        private LinkedList<Midi> pilaMidi;
         
        /**
         * Constructor default de la clase Personaje
@@ -49,7 +49,7 @@ public abstract class Personaje {
         * @param idEstacion Estacion en la que se encuentra el personaje
         * 
         */
-        public Personaje(String nombre, char marcaId, int turno, int idEstacion){
+        public Personaje(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal){
         	
                 this.tipoPj = "";
                 this.nombrePersonaje = nombre;
@@ -60,6 +60,7 @@ public abstract class Personaje {
                 haMovido = false;
                 camino = new LinkedList<dir>();
                 pilaMidi = new LinkedList<Midi>();
+                hallarCamino(gal);
         }
         
         /**
@@ -250,6 +251,11 @@ public abstract class Personaje {
 		public void setCamino(Queue<dir> camino) {
 			this.camino = camino;
 		}
+		
+		public void aniadirCamino(dir camino){
+			
+			this.camino.add(camino);	
+		}
 
 		public LinkedList<Midi> getPilaMidi() {
 			return pilaMidi;
@@ -258,9 +264,14 @@ public abstract class Personaje {
 		public void setPilaMidi(LinkedList<Midi> pilaMidi) {
 			this.pilaMidi = pilaMidi;
 		}
+		
+		public void aniadirMidi(Midi midi){
+			
+			this.pilaMidi.add(midi);
+		}
 
 		//Halla el camino que tiene que seguir el personaje. Lo implementa cada uno individualmente
-		public abstract void HallarCamino(Galaxia gal);
+		public abstract void hallarCamino(Galaxia gal);
 		
 		//Convierte un movimiento de una casilla a otra en un Dir
 		protected dir interpretarCamino(int origen, int destino){
