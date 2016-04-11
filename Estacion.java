@@ -14,8 +14,8 @@ public class Estacion implements Comparable<Estacion> {
 	private int id;
 	private int frecuencia;
 	private boolean puertaSalida;
-    private List<Midi> listaMidiEst;
-	private Queue<Personaje> colaPers;
+    List<Midi> listaMidiEst;
+	List<Personaje> colaPers;
 	
 	/**
    	 * Constructor default de la clase Estacion
@@ -213,6 +213,17 @@ public class Estacion implements Comparable<Estacion> {
    	 */
 	public void setPuertaSalida(boolean puertaSalida) {
 		this.puertaSalida = puertaSalida;
+	}
+	
+	//Activa los personajes en esta estacion si todavia no han movido
+	public void activarPJ (Galaxia gal){
+		Personaje persAux;
+		for (int i = 0; i < colaPers.size();i++)
+		{
+			persAux = colaPers.remove(i);
+			if (persAux.isHaMovido() == false)
+				persAux.Mover(gal);
+		}
 	}
 	
 	// To
