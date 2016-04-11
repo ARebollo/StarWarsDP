@@ -19,7 +19,7 @@ public abstract class Personaje {
         private char marcaId;
         private int turno;
         private int turnoActual;
-        private boolean haMovido;
+        private boolean haMovido; //Indica si el personaje ha actuado este turno o no
         private Queue<dir> camino;
         private LinkedList<Midi> pilaMidi;
         
@@ -49,7 +49,7 @@ public abstract class Personaje {
         * @param idEstacion Estacion en la que se encuentra el personaje
         * 
         */
-        public Personaje(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal){
+        public Personaje(String nombre, char marcaId, int turno, int idEstacion){
         	
                 this.tipoPj = "";
                 this.nombrePersonaje = nombre;
@@ -60,7 +60,6 @@ public abstract class Personaje {
                 haMovido = false;
                 camino = new LinkedList<dir>();
                 pilaMidi = new LinkedList<Midi>();
-                hallarCamino(gal);
         }
         
         /**
@@ -251,11 +250,6 @@ public abstract class Personaje {
 		public void setCamino(Queue<dir> camino) {
 			this.camino = camino;
 		}
-		
-		public void aniadirCamino(dir camino){
-			
-			this.camino.add(camino);	
-		}
 
 		public LinkedList<Midi> getPilaMidi() {
 			return pilaMidi;
@@ -264,14 +258,9 @@ public abstract class Personaje {
 		public void setPilaMidi(LinkedList<Midi> pilaMidi) {
 			this.pilaMidi = pilaMidi;
 		}
-		
-		public void aniadirMidi(Midi midi){
-			
-			this.pilaMidi.add(midi);
-		}
 
 		//Halla el camino que tiene que seguir el personaje. Lo implementa cada uno individualmente
-		public abstract void hallarCamino(Galaxia gal);
+		public abstract void HallarCamino(Galaxia gal);
 		
 		//Convierte un movimiento de una casilla a otra en un Dir
 		protected dir interpretarCamino(int origen, int destino){
@@ -286,9 +275,28 @@ public abstract class Personaje {
 			return null;
 		}
 		
+		private int dirACamino(dir direccion, int ancho){
+			int sig = 0;
+			switch (direccion){
+			case S:
+				sig = idEstacion + ancho;
+				break;
+			case E:
+				sig = idEstacion +1;
+				break;
+			case N:
+				sig = idEstacion - ancho;
+				break;
+			case O:
+				sig = idEstacion - 1;  
+				break;
+			}
+			return sig;
+		}
+		
 		//Mueve el personaje
 		public void Mover(Galaxia gal){
-		//TODO implementar
+		//TODO implementar	
 			actuar(gal); //Despues de mover realiza la accion apropiada
 		}
 		
