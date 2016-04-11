@@ -14,8 +14,8 @@ public class Estacion implements Comparable<Estacion> {
 	private int id;
 	private int frecuencia;
 	private boolean puertaSalida;
-    List<Midi> listaMidiEst;
-	List<Personaje> colaPers;
+    	private List<Midi> listaMidiEst;
+	private List<Personaje> colaPers;
 	
 	/**
    	 * Constructor default de la clase Estacion
@@ -85,7 +85,7 @@ public class Estacion implements Comparable<Estacion> {
 	// List
 	
 	/**
-   	 * Metodo para añadir un Midi a la Estacion, ordenandolos de menor a mayor
+   	 * Metodo para aÃ±adir un Midi a la Estacion, ordenandolos de menor a mayor
    	 * 
    	 * @param midi Objeto de la clase Midi
    	 * 
