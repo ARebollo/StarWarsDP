@@ -49,7 +49,7 @@ public abstract class Personaje {
         * @param idEstacion Estacion en la que se encuentra el personaje
         * 
         */
-        public Personaje(String nombre, char marcaId, int turno, int idEstacion){
+        public Personaje(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal){
         	
                 this.tipoPj = "";
                 this.nombrePersonaje = nombre;
@@ -60,6 +60,11 @@ public abstract class Personaje {
                 haMovido = false;
                 camino = new LinkedList<dir>();
                 pilaMidi = new LinkedList<Midi>();
+        }
+        
+        public void aniadirCamino(dir Dir){
+        	
+        	camino.add(Dir);	
         }
         
         /**
@@ -258,9 +263,19 @@ public abstract class Personaje {
 		public void setPilaMidi(LinkedList<Midi> pilaMidi) {
 			this.pilaMidi = pilaMidi;
 		}
+		
+		public void aniadirMidi(Midi midi){
+			
+			pilaMidi.addFirst(midi);
+		}
+		
+		public Midi sacarMidi(){
+			
+			return pilaMidi.poll();
+		}
 
 		//Halla el camino que tiene que seguir el personaje. Lo implementa cada uno individualmente
-		public abstract void HallarCamino(Galaxia gal);
+		public abstract void hallarCamino(Galaxia gal);
 		
 		//Convierte un movimiento de una casilla a otra en un Dir
 		protected dir interpretarCamino(int origen, int destino){
@@ -295,12 +310,24 @@ public abstract class Personaje {
 		}
 		
 		//Mueve el personaje
-		public void Mover(Galaxia gal){
-		//TODO implementar	
-			actuar(gal); //Despues de mover realiza la accion apropiada
+		public void turnoPj(Galaxia gal){
+			
+			if (gal.getId_salida() == idEstacion)
+			{
+			 tocarPuerta(gal.getPuertaGal());	
+			}
+			else
+			{
+			 gal.buscarEstacion(dirACamino(camino.peek(), gal.getAncho())).aniadirPj(this);  // Obtiene el camino del pj, busca la estacion con esa id y luego añade el personaje
+			 setIdEstacion(dirACamino(camino.remove(), gal.getAncho()));
+			 
+			 tocarMidi(gal.buscarEstacion(idEstacion));
+			}
 		}
 		
 		//Realiza la accion apropiada para cada pj, es llamado por mover
-		protected abstract void actuar(Galaxia gal);
+		protected abstract void tocarPuerta(Puerta puertaGal);
+		
+		protected abstract void tocarMidi(Estacion estacion);
  
 }

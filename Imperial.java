@@ -32,9 +32,7 @@ public class Imperial extends Personaje {
 
 		for (int i = 1; i <= 29; i = i + 2) {
 
-			aniadirMidi(new Midi(i)); // Los imperiales tienen una pila de
-										// midiclorianos del 1 al 29 saltandose
-										// los pares
+			aniadirMidi(new Midi(i)); // Los imperiales tienen una pila de midiclorianos del 1 al 29 saltandose los pares
 		}
 	}
 
@@ -76,11 +74,22 @@ public class Imperial extends Personaje {
 			dirAnt = dirSig;
 		}
 	}
+	
+	@Override
+	protected void tocarPuerta(Puerta puertaGal) {
+		
+		puertaGal.cerrarPuerta();	
+	}
 
 	@Override
-	protected void actuar(Galaxia gal) {
-		// TODO Auto-generated method stub
-
+	protected void tocarMidi(Estacion estacion) {
+		
+		if (getIdEstacion() % 2 == 0)
+		{
+		 getPilaMidi().remove();
+		}
 	}
+	
+	
 
 }

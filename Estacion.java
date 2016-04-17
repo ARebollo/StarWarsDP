@@ -119,6 +119,16 @@ public class Estacion implements Comparable<Estacion> {
 		
 	}
 	
+	public Midi sacarMidi(){
+		
+		return listaMidiEst.remove(0);
+	}
+	
+	public void aniadirPj(Personaje pj){
+		
+		colaPers.add(pj);
+	}
+	
 	/**
    	 * Metodo para mostrar los Midi que tiene la Estacion
    	 * 
@@ -215,14 +225,42 @@ public class Estacion implements Comparable<Estacion> {
 		this.puertaSalida = puertaSalida;
 	}
 	
-	//Activa los personajes en esta estacion si todavia no han movido
+	public boolean hayMidi() {
+		return !listaMidiEst.isEmpty();
+	}
+	
+	/**
+   	 * Cambia el valor del booleano haMovido de cada Personaje que se encuentra en la estacion a False
+   	 * 
+   	 */
+	public void reiniciarTurnoPj(){
+		
+		Personaje persAux;
+		
+		for (int i = 0; i < colaPers.size(); i++) {
+			
+			persAux = colaPers.get(i);
+			
+			persAux.setHaMovido(false);
+		}	
+	}
+	
+	/**
+   	 * Llama al metodo turnoPj de cada  de cada Personaje que se encuentra en la estacion y no haya realizado su turno
+   	 * 
+   	 * @param gal Nuestra Galaxia
+   	 * 
+   	 */
 	public void activarPJ (Galaxia gal){
 		Personaje persAux;
-		for (int i = 0; i < colaPers.size();i++)
-		{
-			persAux = colaPers.remove(i);
+		for (int i = 0; i < colaPers.size(); i++) {
+			
+			persAux = colaPers.remove(0);
+			
 			if (persAux.isHaMovido() == false)
-				persAux.Mover(gal);
+				persAux.turnoPj(gal);
+			else
+				colaPers.add(persAux);
 		}
 	}
 	

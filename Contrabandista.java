@@ -48,8 +48,18 @@ public class Contrabandista extends Personaje {
 	}
 
 	@Override
-	protected void actuar(Galaxia gal) {
-		// TODO Auto-generated method stub
+	protected void tocarPuerta(Puerta puertaGal) {
+		
+		puertaGal.probarMidicloriano(sacarMidi());	
+	}
+	
+	@Override
+	protected void tocarMidi(Estacion estacion) {
+		
+		if (estacion.hayMidi())
+		{
+		 aniadirMidi(estacion.sacarMidi());
+		}
 		
 	}
      
