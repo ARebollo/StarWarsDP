@@ -90,7 +90,7 @@ public class Galaxia {
 	 * @return Objeto de la clase Estacion
 	 * 
 	 */
-	private Estacion buscarEstacion(int id) {
+	protected Estacion buscarEstacion(int id) {
 
 		return listaEstaciones[id / ancho][id % ancho];
 
