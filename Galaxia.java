@@ -179,9 +179,9 @@ public class Galaxia {
 			System.out.println("Problemas con el buffer (flujo)...");
 		} else {
 			while (linea != null) {
-				if (linea.contains("--") == false) // Solo tomar en cuenta
-													// lineas sin comentarios
+				if (linea.contains("--") == false) // Solo tomar en cuenta lineas sin comentarios
 				{
+					//Metemos la linea en vCampos
 					vCampos.clear();
 					numCampos = trocearLineaInicial(linea, vCampos);
 				}
@@ -189,126 +189,90 @@ public class Galaxia {
 				linea = flujo.readLine(); // Avanzar en el fichero
 
 				if (vCampos.isEmpty() == false) {
-					switch (vCampos.get(0)) {
+					switch (vCampos.get(0)) { //Miramos de que tipo es el campo
 					case ("GALAXIA"):
 						try {
-
-							if (Integer.parseInt(vCampos.get(1)) <= 0 || Integer.parseInt(vCampos.get(2)) <= 0
+							//Comprobamos que los parámetros sean válidos (ancho,alto mayores que 0, salida dentro de la galaxia)
+							if (Integer.parseInt(vCampos.get(1)) <= 0 
+									|| Integer.parseInt(vCampos.get(2)) <= 0
 									|| Integer.parseInt(vCampos.get(3)) < 0
 									|| Integer.parseInt(vCampos.get(3)) > (Integer.parseInt(vCampos.get(1))
 											* Integer.parseInt(vCampos.get(2))))
 								throw new ConfigNoValida();
-
+							
 							if (galCreada == false) {
-								mostrarDatosInicial(vCampos);
+								
+								TmostrarDatosInicial(vCampos);
+								//Obtenemos alto, ancho y salida
 								this.alto = Integer.parseInt(vCampos.get(1));
 								this.ancho = Integer.parseInt(vCampos.get(2));
 								this.id_salida = Integer.parseInt(vCampos.get(3));
-
-								List<Midi> listCfg = new LinkedList<Midi>(); // Midis
-																				// para
-																				// la
-																				// combinacion
-																				// de
-																				// la
-																				// puerta
+								
+								// Midis para la combinacion de la puerta
+								List<Midi> listCfg = new LinkedList<Midi>(); 
 								for (int i = 1; i < 30; i = i + 2)
 									listCfg.add(new Midi(i));
 
+								//Configuramos la puerta
 								puertaGal = new Puerta();
 								puertaGal.setProfundidad(Integer.parseInt(vCampos.get(4)));
 								puertaGal.setCombinacionList(listCfg);
 
+								//Creamos las estaciones
 								listaEstaciones = new Estacion[alto][ancho];
 								listaMidiGal = new LinkedList<Midi>();
 
-								for (int i = 0; i < alto; i++)
-									for (int j = 0; j < ancho; j++) // Llenar la
-																	// matriz de
-																	// galaxia
-																	// de
-																	// estaciones
+								for (int i = 0; i < alto; i++){
+									for (int j = 0; j < ancho; j++){
 										listaEstaciones[i][j] = new Estacion(j + ancho * i, 0);
+									}
+								}
 
 								buscarEstacion(id_salida).setPuertaSalida(true);
 
+								//Creamos el grafo
 								grafoGal = new Grafo(alto, ancho, id_salida);
-								grafoGal.procesarParedes(ancho, 12345); // La
-																		// semilla
-																		// va
-																		// aqui
-																		// <-------------------------------------------------
-																		// SEMILLA
-																		// ---------------------------------
+								grafoGal.procesarParedes(ancho, 12345); //Semilla
 
+								//Impedimos que se cree más de una galaxia
 								galCreada = true;
 							}
 
 						} catch (ConfigNoValida e) {
 							throw e;
 						}
-						// Generar personajes
 
 						break;
-
+					
 					case ("FAMILIAREAL"):
 						mostrarDatosInicial(vCampos);
 						persAux = new FamiliaReal(vCampos.get(1), x = vCampos.get(2).charAt(0),
-								Integer.parseInt(vCampos.get(3)), 0); // A la
-																		// hora
-																		// de
-																		// coger
-																		// el
-																		// char
-																		// usamos
-																		// el
-																		// truquillo
-						try {
-							persAux.setCamino(grafoGal.asignarCamino(ancho, persAux.getTipoPj(), id_salida)); // Asignar
-																												// ruta
-						} catch (PersNoValido e1) {
-							e1.printStackTrace();
-						}
-						listaEstaciones[0][0].colaPers.add(persAux);
+								Integer.parseInt(vCampos.get(3)), 0, this);
+						
+						listaEstaciones[0][0].aniadirPj(persAux);
 						break;
 
 					case ("JEDI"):
 						mostrarDatosInicial(vCampos);
 						persAux = new Jedi(vCampos.get(1), x = vCampos.get(2).charAt(0),
-								Integer.parseInt(vCampos.get(3)), 0);
-						try {
-							persAux.setCamino(grafoGal.asignarCamino(ancho, persAux.getTipoPj(), id_salida)); // Asignar
-																												// ruta
-						} catch (PersNoValido e) {
-							e.printStackTrace();
-						}
-						listaEstaciones[0][0].colaPers.add(persAux);
+								Integer.parseInt(vCampos.get(3)), 0,this);
+						
+						listaEstaciones[0][0].aniadirPj(persAux);
 						break;
 
 					case ("IMPERIAL"):
 						mostrarDatosInicial(vCampos);
 						persAux = new Imperial(vCampos.get(1), x = vCampos.get(2).charAt(0),
-								Integer.parseInt(vCampos.get(3)), (alto * ancho) - 1);
-						try {
-							persAux.setCamino(grafoGal.asignarCamino(ancho, persAux.getTipoPj(), id_salida)); // Asignar
-																												// ruta
-						} catch (PersNoValido e) {
-							e.printStackTrace();
-						}
-						listaEstaciones[alto - 1][ancho - 1].colaPers.add(persAux);
+								Integer.parseInt(vCampos.get(3)), (alto * ancho) - 1,this);
+						
+						listaEstaciones[alto - 1][ancho - 1].aniadirPj(persAux);
 						break;
 
 					case ("CONTRABANDISTA"):
 						mostrarDatosInicial(vCampos);
 						persAux = new Contrabandista(vCampos.get(1), x = vCampos.get(2).charAt(0),
-								Integer.parseInt(vCampos.get(3)), (alto * ancho) - ancho);
-						try {
-							persAux.setCamino(grafoGal.asignarCamino(ancho, persAux.getTipoPj(), id_salida)); // Asignar
-																												// ruta
-						} catch (PersNoValido e) {
-							e.printStackTrace();
-						}
-						listaEstaciones[alto - 1][0].colaPers.add(persAux);
+								Integer.parseInt(vCampos.get(3)), (alto * ancho) - ancho,this);
+						listaEstaciones[alto - 1][0].aniadirPj(persAux);
 						break;
 					default:
 						break;
@@ -972,103 +936,6 @@ public class Galaxia {
 
 	}
 
-	/**
-	 * Metodo para la correcta realizacion del turno de cada personaje
-	 * 
-	 * @param pers
-	 *            El personaje actual
-	 * @param altoAct
-	 *            Coordenada x del personaje actual
-	 * @param anchoAct
-	 *            Coordenada y del personaje actual
-	 * 
-	 */
-	private void turnoPers(Personaje pers, int altoAct, int anchoAct) {
-		dir dir;
-		Midi midiAux;
-		boolean hayQueMover = true;
-
-		if (listaEstaciones[altoAct][anchoAct].isPuertaSalida() == true) {
-			if (pers.getTipoPj() == "Imperial" || pers.getTipoPj() == "ImperialEste") {
-				puertaGal.setVectorCfgLinkedList(pers.pilaMidi);
-				puertaGal.cerrarPuerta();
-			} else {
-				if (pers.pilaMidi.isEmpty() == false) {
-					midiAux = pers.pilaMidi.removeLast();
-					puertaGal.probarMidicloriano(midiAux);
-				}
-
-				listaEstaciones[altoAct][anchoAct].colaPers.add(pers);
-				hayQueMover = false;
-			}
-		}
-
-		if (hayQueMover == true) {
-			if (pers.camino.isEmpty() == false) {
-				dir = pers.camino.poll();
-
-				switch (dir) {
-				case N:
-					altoAct--;
-					break;
-				case E:
-					anchoAct++;
-					break;
-				case S:
-					altoAct++;
-					break;
-				case O:
-					anchoAct--;
-					break;
-				}
-
-				listaEstaciones[altoAct][anchoAct].colaPers.add(pers);
-				pers.setIdEstacion(altoAct * anchoAct + altoAct);
-
-				if ((pers.getTipoPj() == "Imperial" || pers.getTipoPj() == "ImperialEste")
-						&& ((altoAct * anchoAct + altoAct) % 2 == 0) && pers.pilaMidi.isEmpty() == false) {
-					pers.pilaMidi.removeLast();
-				} else {
-					if (listaEstaciones[altoAct][anchoAct].listaMidiEst.isEmpty() == false) {
-						midiAux = listaEstaciones[altoAct][anchoAct].listaMidiEst.remove(0);
-						pers.pilaMidi.add(midiAux);
-					}
-				}
-			} else {
-				listaEstaciones[altoAct][anchoAct].colaPers.add(pers);
-
-				if (pers.getTipoPj() == "Imperial" || pers.getTipoPj() == "ImperialEste") {
-					try {
-						pers.setCamino(grafoGal.asignarCamino(ancho, pers.getTipoPj(), id_salida));
-					} catch (PersNoValido e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Metodo para reiniciar el booleano "HaMovido" de todos los personajes que
-	 * se encuentran en la Galaxia
-	 * 
-	 */
-	private void reestablecerTurno() {
-
-		for (int i = 0; i < alto; i++) {
-
-			for (int j = 0; j < ancho; j++) {
-
-				Iterator<Personaje> it = listaEstaciones[i][j].colaPers.iterator();
-
-				while (it.hasNext() == true) {
-
-					it.next().setHaMovido(false);
-				}
-			}
-		}
-
-	}
 	private boolean activarEstaciones() {
 		boolean fin = false;
 		for (int i = 0; i<ancho && fin == false;i++){
@@ -1093,101 +960,13 @@ public class Galaxia {
 			fin = activarEstaciones();
 			if (fin == false)
 				reiniciarTurno();
+			infoTurno(turno);
+			try {
+				datosAFichero(turno,fin); //TODO Este booleano que se hace
+			} catch (IOException e) {}
 		}
-	}
-
-	/**
-	 * Metodo para ejecutar y gestionar la simulacion:
-	 * 
-	 * <br>
-	 * 1º Gestiona el turno de todos los personajes <br>
-	 * 2º Guarda y muestra la informacion de cada turno
-	 * 
-	 * @throws IOException
-	 * 
-	 */
-	public void ejecutarJuego() throws IOException {
-
-		Personaje persAux;
-		boolean parar = false;
-		int n = 0;
-
-		for (; n <= 50 && puertaGal.isEstado() == false; n++) {
-
-			if (n > 0) // A partir del primer turno, se debe reiniciar el
-						// booleano de todos los personajes
-			{
-				reestablecerTurno();
-			}
-
-			for (int i = 0; i < alto; i++) {
-
-				for (int j = 0; j < ancho; j++) {
-
-					parar = false;
-
-					while (listaEstaciones[i][j].colaPers.isEmpty() == false && parar == false) {
-
-						persAux = listaEstaciones[i][j].colaPers.peek(); // Primero
-																			// miramos,
-																			// sin
-																			// quitar
-																			// al
-																			// personaje
-						persAux.setTurnoActual(n); // Le indicamos en que turno
-													// se encuentra
-
-						if (persAux.isHaMovido() == false) // Si no ha movido
-															// todavia, sacarlo
-															// y continuar
-						{
-							persAux = listaEstaciones[i][j].colaPers.poll();
-						} else // Si ha movido, entonces el resto de la cola
-								// tambien ha movido, por lo que paramos el
-								// bucle
-						{
-							parar = true;
-						}
-
-						if (persAux.isHaMovido() == false && persAux.getTurno() <= n) // Si
-																						// ya
-																						// ha
-																						// pasado
-																						// su
-																						// turno
-																						// de
-																						// inicio,
-																						// que
-																						// se
-																						// mueva
-						{
-							persAux.setHaMovido(true);
-							turnoPers(persAux, i, j);
-						} else if (persAux.isHaMovido() == false && persAux.getTurno() > n) // Si
-																							// no
-																							// es
-																							// su
-																							// turno
-																							// de
-																							// inicio,
-																							// quieto
-																							// parao
-						{
-							persAux.setHaMovido(true);
-							listaEstaciones[i][j].colaPers.add(persAux);
-						}
-					}
-				}
-
-			}
-
-			infoTurno(n);
-			datosAFichero(n, false);
-		}
-
 		mostrarFin();
 	}
-	
 
 	private void mostrarFin() {
 		
