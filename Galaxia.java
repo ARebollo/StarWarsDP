@@ -1069,6 +1069,32 @@ public class Galaxia {
 		}
 
 	}
+	private boolean activarEstaciones() {
+		boolean fin = false;
+		for (int i = 0; i<ancho && fin == false;i++){
+			for (int j = 0; j<alto && fin == false;j++){
+				fin = listaEstaciones[i][j].activarPJ(this);
+			}
+		}
+		return fin;
+	}
+	
+	private void reiniciarTurno(){
+		for (int i = 0; i<ancho;i++){
+			for (int j = 0; j<alto;j++){
+				listaEstaciones[i][j].reiniciarTurnoPj();
+			}
+		}
+	}
+	
+	private void simular() {
+		boolean fin = false;
+		for (int turno = 0;turno < 50 && fin == false; turno++){
+			fin = activarEstaciones();
+			if (fin == false)
+				reiniciarTurno();
+		}
+	}
 
 	/**
 	 * Metodo para ejecutar y gestionar la simulacion:
@@ -1399,7 +1425,7 @@ public class Galaxia {
 
 		try {
 			pepe = new Galaxia(args[0]);
-			pepe.ejecutarJuego();
+			pepe.simular();
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -1463,5 +1489,10 @@ public class Galaxia {
 
 	public void setListaMidiGal(Queue<Midi> listaMidiGal) {
 		this.listaMidiGal = listaMidiGal;
+	}
+	
+	//True si la puerta se ha abierto
+	public boolean finJuego(){
+		return puertaGal.isEstado();
 	}
 }

@@ -251,9 +251,10 @@ public class Estacion implements Comparable<Estacion> {
    	 * @param gal Nuestra Galaxia
    	 * 
    	 */
-	public void activarPJ (Galaxia gal){
+	public boolean activarPJ (Galaxia gal){
 		Personaje persAux;
-		for (int i = 0; i < colaPers.size(); i++) {
+		boolean fin = false;
+		for (int i = 0; i < colaPers.size() && fin == false; i++) {
 			
 			persAux = colaPers.remove(0);
 			
@@ -261,7 +262,9 @@ public class Estacion implements Comparable<Estacion> {
 				persAux.turnoPj(gal);
 			else
 				colaPers.add(persAux);
+			fin = gal.finJuego();
 		}
+		return fin;
 	}
 	
 	// To
