@@ -202,7 +202,7 @@ public class Galaxia {
 							
 							if (galCreada == false) {
 								
-								TmostrarDatosInicial(vCampos);
+								mostrarDatosInicial(vCampos);
 								//Obtenemos alto, ancho y salida
 								this.alto = Integer.parseInt(vCampos.get(1));
 								this.ancho = Integer.parseInt(vCampos.get(2));
@@ -439,26 +439,12 @@ public class Galaxia {
 
 				arcoBajo = true;
 
-				if (listaEstaciones[i][j].colaPers.isEmpty() == false) {
-					if (listaEstaciones[i][j].colaPers.size() > 1) {
-						System.out.print(listaEstaciones[i][j].colaPers.size()); // Si
-																					// hay
-																					// mas
-																					// de
-																					// 2
-																					// personajes
-																					// en
-																					// la
-																					// misma
-																					// estacion,
-																					// mostrar
-																					// el
-																					// numero
-																					// de
-																					// los
-																					// mismos
+				if (listaEstaciones[i][j].hayPersonajes() == true) {
+					if (listaEstaciones[i][j].cuantosPJ() > 1) {
+						System.out.print(listaEstaciones[i][j].cuantosPJ()); 
+						// Si hay mas de 2 personajes en la misma estacion, muestra cuántos hay
 					} else {
-						System.out.print(listaEstaciones[i][j].colaPers.peek().getMarcaId());
+						System.out.print(listaEstaciones[i][j].sacarPJ().getMarcaId());
 					}
 				} else {
 					y = 0;
@@ -540,7 +526,7 @@ public class Galaxia {
 
 			for (int j = 0; j < ancho; j++) {
 
-				if (listaEstaciones[i][j].listaMidiEst.isEmpty() == false) {
+				if (listaEstaciones[i][j].hayMidis() == true) {
 					System.out.print("(estacion:" + listaEstaciones[i][j].getId() + ": ");
 					listaEstaciones[i][j].mostrarLista();
 					System.out.print(")");
@@ -557,16 +543,12 @@ public class Galaxia {
 
 			for (int j = 0; j < ancho; j++) {
 
-				Iterator<Personaje> it = listaEstaciones[i][j].colaPers.iterator();
-
-				while (it.hasNext() == true) {
-
-					System.out.println(it.next().toString());
+				listaEstaciones[i][j].mostrarPersonajes();
 				}
 			}
 		}
 
-	}
+	
 
 	/**
 	 * Metodo para almacenar los datos de un turno en un fichero externo llamado
@@ -598,7 +580,7 @@ public class Galaxia {
 		if (turno == 0) // Imprimir todos los caminos de los personajes al
 						// comienzo de la simulacion
 		{
-			Iterator<Personaje> it = buscarEstacion(0).colaPers.iterator(); // Para
+			Iterator<Personaje> it = buscarEstacion(0).getColaPers().iterator(); // Para
 																			// los
 																			// JEDI
 																			// y
@@ -610,7 +592,7 @@ public class Galaxia {
 				out.println("(ruta:" + persAux.getMarcaId() + ":" + persAux.mostrarCamino() + ")");
 			}
 
-			it = buscarEstacion(alto * ancho - ancho).colaPers.iterator(); // Para
+			it = buscarEstacion(alto * ancho - ancho).getColaPers().iterator(); // Para
 																			// los
 																			// JEDI
 																			// y
@@ -622,7 +604,7 @@ public class Galaxia {
 				out.println("(ruta:" + persAux.getMarcaId() + ":" + persAux.mostrarCamino() + ")");
 			}
 
-			it = buscarEstacion(alto * ancho - 1).colaPers.iterator(); // Para
+			it = buscarEstacion(alto * ancho - 1).getColaPers().iterator(); // Para
 																		// los
 																		// JEDI
 																		// y FR
@@ -683,9 +665,9 @@ public class Galaxia {
 
 					arcoBajo = true;
 
-					if (listaEstaciones[i][j].colaPers.isEmpty() == false) {
-						if (listaEstaciones[i][j].colaPers.size() > 1) {
-							out.print(listaEstaciones[i][j].colaPers.size()); // Si
+					if (listaEstaciones[i][j].hayPersonajes() == true) {
+						if (listaEstaciones[i][j].cuantosPJ() > 1) {
+							out.print(listaEstaciones[i][j].cuantosPJ()); // Si
 																				// hay
 																				// mas
 																				// de
@@ -702,7 +684,7 @@ public class Galaxia {
 																				// los
 																				// mismos
 						} else {
-							out.print(listaEstaciones[i][j].colaPers.peek().getMarcaId());
+							out.print(listaEstaciones[i][j].sacarPJ().getMarcaId());
 						}
 					} else {
 						y = 0;
@@ -790,7 +772,7 @@ public class Galaxia {
 
 				for (int j = 0; j < ancho; j++) {
 
-					Iterator<Midi> it = listaEstaciones[i][j].listaMidiEst.iterator();
+					Iterator<Midi> it = listaEstaciones[i][j].getListaMidiEst().iterator();
 
 					if (it.hasNext() == true) {
 						out.print("(estacion:" + listaEstaciones[i][j].getId() + ": ");
@@ -814,7 +796,7 @@ public class Galaxia {
 
 				for (int j = 0; j < ancho; j++) {
 
-					Iterator<Personaje> it = listaEstaciones[i][j].colaPers.iterator();
+					Iterator<Personaje> it = listaEstaciones[i][j].getColaPers().iterator();
 
 					while (it.hasNext() == true) {
 
@@ -856,7 +838,7 @@ public class Galaxia {
 
 				for (int j = 0; j < ancho; j++) {
 
-					if (listaEstaciones[i][j].listaMidiEst.isEmpty() == false) {
+					if (listaEstaciones[i][j].hayMidis() == true) {
 						out.print("     " + listaEstaciones[i][j].getId() + "      | ");
 						out.print(listaEstaciones[i][j].mostrarListaStr());
 						out.println();
@@ -876,7 +858,7 @@ public class Galaxia {
 
 				for (int j = 0; j < ancho; j++) {
 
-					Iterator<Personaje> it = listaEstaciones[i][j].colaPers.iterator();
+					Iterator<Personaje> it = listaEstaciones[i][j].getColaPers().iterator();
 
 					while (it.hasNext()) {
 
@@ -897,7 +879,7 @@ public class Galaxia {
 			if (puertaGal.isEstado() == true) // Si puerta abierta, ganan los
 												// rebeldes
 			{
-				Iterator<Personaje> it = buscarEstacion(id_salida).colaPers.iterator();
+				Iterator<Personaje> it = buscarEstacion(id_salida).getColaPers().iterator();
 
 				while (it.hasNext() == true) {
 
@@ -912,7 +894,7 @@ public class Galaxia {
 
 					for (int j = 0; j < ancho; j++) {
 
-						Iterator<Personaje> it = listaEstaciones[i][j].colaPers.iterator();
+						Iterator<Personaje> it = listaEstaciones[i][j].getColaPers().iterator();
 
 						while (it.hasNext()) {
 
@@ -1024,9 +1006,9 @@ public class Galaxia {
 
 				arcoBajo = true;
 
-				if (listaEstaciones[i][j].colaPers.isEmpty() == false) {
-					if (listaEstaciones[i][j].colaPers.size() > 1) {
-						System.out.print(listaEstaciones[i][j].colaPers.size()); // Si
+				if (listaEstaciones[i][j].hayPersonajes() == true) {
+					if (listaEstaciones[i][j].cuantosPJ() > 1) {
+						System.out.print(listaEstaciones[i][j].cuantosPJ()); // Si
 																					// hay
 																					// mas
 																					// de
@@ -1043,7 +1025,7 @@ public class Galaxia {
 																					// los
 																					// mismos
 					} else {
-						System.out.print(listaEstaciones[i][j].colaPers.peek().getMarcaId());
+						System.out.print(listaEstaciones[i][j].sacarPJ().getMarcaId());
 					}
 				} else {
 					y = 0;
@@ -1126,7 +1108,7 @@ public class Galaxia {
 
 			for (int j = 0; j < ancho; j++) {
 
-				if (listaEstaciones[i][j].listaMidiEst.isEmpty() == false) {
+				if (listaEstaciones[i][j].hayMidis() == true) {
 					System.out.print("     " + listaEstaciones[i][j].getId() + "      | ");
 					listaEstaciones[i][j].mostrarLista();
 					System.out.println();
@@ -1145,13 +1127,7 @@ public class Galaxia {
 
 			for (int j = 0; j < ancho; j++) {
 
-				Iterator<Personaje> it = listaEstaciones[i][j].colaPers.iterator();
-
-				while (it.hasNext()) {
-
-					persAux = it.next();
-					System.out.println(persAux.toString());
-				}
+				listaEstaciones[i][j].mostrarPersonajes();
 			}
 		}
 		System.out.println("-------------------------------------------");
@@ -1165,16 +1141,8 @@ public class Galaxia {
 
 		if (puertaGal.isEstado() == true) 
 		{
-
-			Iterator<Personaje> it = buscarEstacion(id_salida).colaPers.iterator();
-
-			while (it.hasNext() == true) {
-
-				persAux = it.next();
-				System.out.print("Ganador/es: ");
-				System.out.println(persAux.toString());
-			}
-
+			System.out.println("Ganador/es: ");
+			buscarEstacion(id_salida).mostrarPersonajes();
 		} 
 		else 
 		{
@@ -1182,18 +1150,11 @@ public class Galaxia {
 
 				for (int j = 0; j < ancho; j++) {
 
-					Iterator<Personaje> it = listaEstaciones[i][j].colaPers.iterator();
-
-					while (it.hasNext()) {
-
-						persAux = it.next();
-						if (persAux.getTipoPj() == "Imperial" || persAux.getTipoPj() == "ImperialEste") {
-							System.out.println(persAux.toString());
-						}
+					listaEstaciones[i][j].mostrarImp();
 					}
 				}
 			}
-		}
+		
 
 		System.out.println("-------------------------------------------");
 	}

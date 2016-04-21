@@ -124,9 +124,17 @@ public class Estacion implements Comparable<Estacion> {
 		return listaMidiEst.remove(0);
 	}
 	
+	public boolean hayMidis(){
+		return !listaMidiEst.isEmpty();
+	}
+	
 	public void aniadirPj(Personaje pj){
 		
 		colaPers.add(pj);
+	}
+	
+	public Personaje sacarPJ(){
+		return colaPers.get(0);
 	}
 	
 	/**
@@ -161,6 +169,37 @@ public class Estacion implements Comparable<Estacion> {
 		}
 		
 	  return a;
+	}
+	
+	public void mostrarPersonajes(){
+		Iterator<Personaje> it = colaPers.iterator();
+		
+		while (it.hasNext() == true){
+			
+			System.out.print(it.next().toString() + " ");
+
+		}
+	}
+	
+	public void mostrarImp(){
+		Iterator<Personaje> it = colaPers.iterator();
+		Personaje persAux;
+		while (it.hasNext() == true){
+			persAux = it.next();
+			if (persAux.getClass().getName() == "Imperial"){ //TODO Seguro que es así?
+				System.out.print(it.next().toString() + " ");
+			}
+			
+
+		}
+	}
+	
+	public boolean hayPersonajes(){
+		return !colaPers.isEmpty();
+	}
+	
+	public int cuantosPJ(){
+		return colaPers.size();
 	}
 	
 	// Getters & Setters
@@ -294,6 +333,22 @@ public class Estacion implements Comparable<Estacion> {
 			return 0;
 		else
 			return 1;
+	}
+
+	protected List<Midi> getListaMidiEst() {
+		return listaMidiEst;
+	}
+
+	protected void setListaMidiEst(List<Midi> listaMidiEst) {
+		this.listaMidiEst = listaMidiEst;
+	}
+
+	protected List<Personaje> getColaPers() {
+		return colaPers;
+	}
+
+	protected void setColaPers(List<Personaje> colaPers) {
+		this.colaPers = colaPers;
 	}
 
 }
