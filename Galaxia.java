@@ -3,8 +3,6 @@ package DEV;
 import java.util.*;
 import java.io.*;
 
-import DEV.Personaje.dir;
-
 /**
  * Declaracion de la clase Galaxia
  * 
@@ -272,6 +270,7 @@ public class Galaxia {
 						mostrarDatosInicial(vCampos);
 						persAux = new Contrabandista(vCampos.get(1), x = vCampos.get(2).charAt(0),
 								Integer.parseInt(vCampos.get(3)), (alto * ancho) - ancho,this);
+						
 						listaEstaciones[alto - 1][0].aniadirPj(persAux);
 						break;
 					default:
@@ -379,12 +378,383 @@ public class Galaxia {
 		System.out.println();
 
 	}
+	
+	private void mostrarMapa(){
+		
+		int y = 0;
+		int x = 0;
+		Boolean arcoBajo = true; 	// Para comprobar si hay un arco debajo del nodo actual
+		Boolean arcoDer = false; 	// Para comprobar si hay un arco a la derecha del nodo actual
+		
+		System.out.println();
+		System.out.print(" ");
+
+		for (int i = 0; i < (ancho * 2) - 1; i++) {
+
+			System.out.print('_');
+		}
+		
+		for (int i = 0; i < alto; i++) {
+
+			System.out.print('|');
+
+			for (int j = 0; j < ancho; j++) {
+
+				arcoBajo = true;
+
+				if (listaEstaciones[i][j].hayPersonajes() == true) 
+				{
+					if (listaEstaciones[i][j].cuantosPJ() > 1) 
+					{
+						System.out.print(listaEstaciones[i][j].cuantosPJ()); // Si hay mas de 2 personajes en la misma estacion, muestra cuántos hay
+					} 
+					else 
+					{
+						System.out.print(listaEstaciones[i][j].sacarPJ().getMarcaId());
+					}
+				} 
+				else
+				{
+					y = 0;
+					arcoBajo = false;
+
+					while (y < grafoGal.devolverArcos().size() && arcoBajo == false) {	// Comprobamos si hay un arco con el nodo de debajo			
+						
+						if (grafoGal.devolverArcos().get(y).getFirst() == i*ancho+j)  // Si el nodo de la lista coincide con el que estamos continuamos
+						{
+							if (grafoGal.devolverArcos().get(y).getFirst() + ancho == grafoGal.devolverArcos().get(y).getSecond())
+							{
+								System.out.print(' ');
+								arcoBajo = true;
+							}
+						}
+						y = y + 1;
+					} // Fin while arcoBajo
+				}
+
+				if (arcoBajo == false)
+					System.out.print('_'); // Imprimir antes de comprobar arcos a la der, por errores de espacio											
+
+				x = 0;
+				arcoDer = false;
+
+				while (x < grafoGal.devolverArcos().size() && arcoDer == false) {  // Comprobamos si hay un arco con el nodo de la derecha	
+
+					if (grafoGal.devolverArcos().get(x).getFirst() == i*ancho+j)  // Si el nodo de la lista coincide con el que estamos	continuamos
+					{
+						if (grafoGal.devolverArcos().get(x).getFirst() + 1 == grafoGal.devolverArcos().get(x).getSecond()) 
+						{
+							System.out.print(' ');
+							arcoDer = true;
+						}
+					}
+					x = x + 1;
+				} // Fin while arcoDer
+
+				if (arcoDer == false)
+					System.out.print('|');
+
+			} // Fin for j
+
+			System.out.println();
+
+		} // Fin for i
+
+		System.out.print(" ");
+
+		System.out.println();		
+	}
+	
+	private void mapaAFichero (PrintWriter out) throws IOException{
+		
+		int y = 0;
+		int x = 0;
+		Boolean arcoBajo = true; 	// Para comprobar si hay un arco debajo del nodo actual
+		Boolean arcoDer = false; 	// Para comprobar si hay un arco a la derecha del nodo actual
+		
+		out.println();
+		out.print(" ");
+
+		for (int i = 0; i < (ancho * 2) - 1; i++) {
+
+			out.print('_');
+		}
+		
+		for (int i = 0; i < alto; i++) {
+
+			out.print('|');
+
+			for (int j = 0; j < ancho; j++) {
+
+				arcoBajo = true;
+
+				if (listaEstaciones[i][j].hayPersonajes() == true) 
+				{
+					if (listaEstaciones[i][j].cuantosPJ() > 1) 
+					{
+						out.print(listaEstaciones[i][j].cuantosPJ()); // Si hay mas de 2 personajes en la misma estacion, muestra cuántos hay
+					} 
+					else 
+					{
+						out.print(listaEstaciones[i][j].sacarPJ().getMarcaId());
+					}
+				} 
+				else
+				{
+					y = 0;
+					arcoBajo = false;
+
+					while (y < grafoGal.devolverArcos().size() && arcoBajo == false) {	// Comprobamos si hay un arco con el nodo de debajo			
+						
+						if (grafoGal.devolverArcos().get(y).getFirst() == i*ancho+j)  // Si el nodo de la lista coincide con el que estamos continuamos
+						{
+							if (grafoGal.devolverArcos().get(y).getFirst() + ancho == grafoGal.devolverArcos().get(y).getSecond())
+							{
+								out.print(' ');
+								arcoBajo = true;
+							}
+						}
+						y = y + 1;
+					} // Fin while arcoBajo
+				}
+
+				if (arcoBajo == false)
+					out.print('_'); // Imprimir antes de comprobar arcos a la der, por errores de espacio											
+
+				x = 0;
+				arcoDer = false;
+
+				while (x < grafoGal.devolverArcos().size() && arcoDer == false) {  // Comprobamos si hay un arco con el nodo de la derecha	
+
+					if (grafoGal.devolverArcos().get(x).getFirst() == i*ancho+j)  // Si el nodo de la lista coincide con el que estamos	continuamos
+					{
+						if (grafoGal.devolverArcos().get(x).getFirst() + 1 == grafoGal.devolverArcos().get(x).getSecond()) 
+						{
+							out.print(' ');
+							arcoDer = true;
+						}
+					}
+					x = x + 1;
+				} // Fin while arcoDer
+
+				if (arcoDer == false)
+					out.print('|');
+
+			} // Fin for j
+
+			out.println();
+
+		} // Fin for i
+
+		out.print(" ");
+
+		out.println();
+	
+	}
+
+	private void mostrarFin() {
+		
+		System.out.println();
+		System.out.println("---------------------------");
+		System.out.println("La simulación ha terminado|");
+		System.out.println("---------------------------");
+	
+		System.out.println("La puerta de salida se encontraba en la estación " + id_salida);
+	
+		System.out.print("Estado de la puerta: ");
+		if (puertaGal.isEstado() == true) {
+			System.out.println("ABIERTA");
+		} else {
+			System.out.println("CERRADA");
+		}
+	
+		System.out.print("La combinación es:");
+		puertaGal.mostrarVectorCfg();
+		System.out.println(" y su profundidad es " + puertaGal.getProfundidad());
+		System.out.print("Se han probado los midiclorianos: ");
+		puertaGal.getProbados().inOrder();
+		System.out.println();
+	
+		// ----------------------
+		// Mostrando tablero final
+		// ----------------------
+		System.out.println("El tablero al finalizar la simulación es el siguiente:");
+		
+		mostrarMapa();
+	
+		// ----------------------
+		// Mostrando estaciones
+		// ----------------------
+		System.out.println("Id Estación | Midiclorianos restantes");
+	
+		for (int i = 0; i < alto; i++) {
+	
+			for (int j = 0; j < ancho; j++) {
+	
+				if (listaEstaciones[i][j].hayMidis() == true) {
+					System.out.print("     " + listaEstaciones[i][j].getId() + "      | ");
+					listaEstaciones[i][j].mostrarLista();
+					System.out.println();
+				}
+			}
+		}
+	
+		// ----------------------
+		// Mostrando personajes
+		// ----------------------
+		System.out.println();
+		System.out.println("Personajes:");
+		System.out.println("-------------------------------------------");
+	
+		for (int i = 0; i < alto; i++) {
+	
+			for (int j = 0; j < ancho; j++) {
+	
+				listaEstaciones[i][j].mostrarPersonajes();
+			}
+		}
+		System.out.println("-------------------------------------------");
+	
+		// ----------------------
+		// Mostrando ganadores
+		// ----------------------
+		System.out.println();
+		System.out.println("Ganadores:");
+		System.out.println("-------------------------------------------");
+	
+		if (puertaGal.isEstado() == true) 
+		{
+			System.out.println("Ganador/es: ");
+			buscarEstacion(id_salida).mostrarPersonajes();
+		} 
+		else 
+		{
+			for (int i = 0; i < alto; i++) {
+	
+				for (int j = 0; j < ancho; j++) {
+	
+					listaEstaciones[i][j].mostrarImp();
+					}
+				}
+			}
+		
+	
+		System.out.println("-------------------------------------------");
+	}
+
+	private void finAFichero (PrintWriter out){
+		
+		Personaje persAux;
+		
+		out.println();
+		out.println("---------------------------");
+		out.println("La simulación ha terminado|");
+		out.println("---------------------------");
+	
+		out.println("La puerta de salida se encontraba en la estación " + id_salida);
+	
+		out.print("Estado de la puerta: ");
+		if (puertaGal.isEstado() == true) {
+			out.println("ABIERTA");
+		} else {
+			out.println("CERRADA");
+		}
+	
+		out.print("La combinación es:");
+		out.println(puertaGal.mostrarVectorCfgString());
+		out.println(" y su profundidad es " + puertaGal.getProfundidad());
+		out.print("Se han probado los midiclorianos: " + puertaGal.getProbados().arbolAString());
+		out.println();
+		out.println();
+	
+		// ----------------------
+		// Mostrando estaciones
+		// ----------------------
+		out.println("Id Estación | Midiclorianos restantes");
+	
+		for (int i = 0; i < alto; i++) {
+	
+			for (int j = 0; j < ancho; j++) {
+	
+				if (listaEstaciones[i][j].hayMidis() == true) {
+					out.print("     " + listaEstaciones[i][j].getId() + "      | ");
+					out.print(listaEstaciones[i][j].mostrarListaStr());
+					out.println();
+				}
+			}
+		}
+	
+		// ----------------------
+		// Mostrando personajes
+		// ----------------------
+	
+		out.println();
+		out.println("Personajes:");
+		out.println("-------------------------------------------");
+	
+		for (int i = 0; i < alto; i++) {
+	
+			for (int j = 0; j < ancho; j++) {
+	
+				Iterator<Personaje> it = listaEstaciones[i][j].getColaPers().iterator();
+	
+				while (it.hasNext()) {
+	
+					persAux = it.next();
+					out.println(persAux.toString());
+				}
+			}
+		}
+		out.println("-------------------------------------------");
+	
+		// ----------------------
+		// Mostrando ganadores
+		// ----------------------
+		out.println();
+		out.println("Ganadores:");
+		out.println("-------------------------------------------");
+	
+		if (puertaGal.isEstado() == true) // Si puerta abierta, ganan los rebeldes
+		{
+			Iterator<Personaje> it = buscarEstacion(id_salida).getColaPers().iterator();
+	
+			while (it.hasNext() == true) {
+	
+				out.print("Ganador/es: ");
+				persAux = it.next();
+				out.println(persAux.toString());
+			}
+			
+		} 
+		else // Si puerta cerrada, los imperiales, que pueden estar en cualquier estacion de la galaxia
+		{
+			for (int i = 0; i < alto; i++) {
+	
+				for (int j = 0; j < ancho; j++) {
+	
+					Iterator<Personaje> it = listaEstaciones[i][j].getColaPers().iterator();
+	
+					while (it.hasNext()) {
+	
+						persAux = it.next();
+						
+						if (persAux.getTipoPj() == "Imperial")	//TODO estas cosas me parece k no
+						{
+							out.println(persAux.toString());
+						}
+					}
+				}
+			}
+		}
+	
+		out.println("-------------------------------------------");
+		
+	}
 
 	/**
 	 * Metodo para mostrar toda la informacion relacionada con un turno
 	 * 
-	 * @param turno
-	 *            Numero del turno en el que se encuentra la simulacion
+	 * @param turno Numero del turno en el que se encuentra la simulacion
 	 * 
 	 */
 	private void infoTurno(int turno) {
@@ -408,113 +778,7 @@ public class Galaxia {
 		// Mostrar el mapa de la Galaxia
 		// ------------------------------------
 
-		int[] vArcos;
-		int x = 0;
-		int y = 0;
-
-		// TODO TOCA CAMBIAR ESTO PARA QUE USE PAIRS, DEVOLVER ARCOS VA A
-		// DEVOLVER PAIRS
-		// vArcos = grafoGal.devolverArcos(); // Le pasamos los arcos que
-		// existen en el grafo, para no dibujar '|' o '_' k no correspondan
-		Boolean arcoDer = false; // Para comprobar si hay un arco a la derecha
-									// del nodo actual
-		Boolean arcoBajo = true; // Para comprobar si hay un arco debajo del
-									// nodo actual
-
-		System.out.println();
-		System.out.print(" ");
-
-		for (int i = 0; i < (ancho * 2) - 1; i++) {
-
-			System.out.print('_');
-		}
-
-		System.out.println();
-
-		for (int i = 0; i < alto; i++) {
-
-			System.out.print('|');
-
-			for (int j = 0; j < ancho; j++) {
-
-				arcoBajo = true;
-
-				if (listaEstaciones[i][j].hayPersonajes() == true) {
-					if (listaEstaciones[i][j].cuantosPJ() > 1) {
-						System.out.print(listaEstaciones[i][j].cuantosPJ()); 
-						// Si hay mas de 2 personajes en la misma estacion, muestra cuántos hay
-					} else {
-						System.out.print(listaEstaciones[i][j].sacarPJ().getMarcaId());
-					}
-				} else {
-					y = 0;
-					arcoBajo = false;
-
-					while (y < vArcos.length && arcoBajo == false) {
-
-						if (vArcos[y] == i * ancho + j) {
-							if (vArcos[y + 1] == (vArcos[y] + ancho)) // Si
-																		// [y+1]
-																		// es ==
-																		// [y]+ancho,
-																		// entonces
-																		// se
-																		// trate
-																		// de un
-																		// arco
-																		// con
-																		// la
-																		// estacion
-																		// de
-																		// debajo
-							{
-								System.out.print(' ');
-								arcoBajo = true;
-							}
-						}
-
-						y = y + 2; // Los arcos estan en parejas en el vector
-					} // Fin while arcoBajo
-				}
-
-				if (arcoBajo == false)
-					System.out.print('_'); // Imprimir antes de comprobar arcos
-											// a la der, por errores y eso
-
-				x = 0;
-				arcoDer = false;
-
-				while (x < vArcos.length && arcoDer == false) {
-
-					if (vArcos[x] == i * ancho + j) {
-						if (vArcos[x + 1] == (vArcos[x] + 1)) // Si [x+1] es ==
-																// [x]+1,
-																// entonces se
-																// trate de un
-																// arco con la
-																// estacion a la
-																// derecha
-						{
-							System.out.print(' ');
-							arcoDer = true;
-						}
-					}
-
-					x = x + 2; // Los arcos estan en parejas en el vector
-				} // Fin while arcoDer
-
-				if (arcoDer == false)
-					System.out.print('|');
-
-			} // Fin for j
-
-			System.out.println();
-
-		} // Fin for i
-
-		System.out.print(" ");
-
-		System.out.println();
+		mostrarMapa();
 
 		// ------------------------------------
 		// Mostrar estaciones con midiclorianos
@@ -526,10 +790,12 @@ public class Galaxia {
 
 			for (int j = 0; j < ancho; j++) {
 
-				if (listaEstaciones[i][j].hayMidis() == true) {
+				if (listaEstaciones[i][j].hayMidis() == true) 
+				{
 					System.out.print("(estacion:" + listaEstaciones[i][j].getId() + ": ");
 					listaEstaciones[i][j].mostrarLista();
 					System.out.print(")");
+					
 					System.out.println();
 				}
 			}
@@ -544,47 +810,31 @@ public class Galaxia {
 			for (int j = 0; j < ancho; j++) {
 
 				listaEstaciones[i][j].mostrarPersonajes();
-				}
 			}
 		}
-
+	}
 	
 
 	/**
-	 * Metodo para almacenar los datos de un turno en un fichero externo llamado
-	 * "logDatos.txt"
+	 * Metodo para almacenar los datos de un turno en un fichero externo llamado "logDatos.txt"
 	 * 
-	 * @param turno
-	 *            Numero del turno en el que se encuentra la simulacion
-	 * @param fin
-	 *            Booleano para indicar si ha terminado o no la simulacion
+	 * @param turno Numero del turno en el que se encuentra la simulacion
+	 * @param fin Booleano para indicar si ha terminado o no la simulacion
 	 * 
 	 * @throws IOException
 	 * 
 	 */
-	private void datosAFichero(int turno, boolean fin) throws IOException {
+	private void datosAFichero(int turno) throws IOException {
 
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("registro.log", true))); // Iniciar
-																										// flujo
-																										// (true
-																										// para
-																										// que
-																										// el
-																										// archivo
-																										// añada
-																										// datos
-																										// al
-																										// final)
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("registro.log", true))); // Iniciar flujo (true para que el archivo añada datos al final)
+																									
 		Personaje persAux; // Para extraer datos de los personajes
+		// TODO not sure
 
 		if (turno == 0) // Imprimir todos los caminos de los personajes al
 						// comienzo de la simulacion
 		{
-			Iterator<Personaje> it = buscarEstacion(0).getColaPers().iterator(); // Para
-																			// los
-																			// JEDI
-																			// y
-																			// FR
+			Iterator<Personaje> it = buscarEstacion(0).getColaPers().iterator(); // Para los JEDI y FR
 
 			while (it.hasNext() == true) {
 
@@ -592,23 +842,16 @@ public class Galaxia {
 				out.println("(ruta:" + persAux.getMarcaId() + ":" + persAux.mostrarCamino() + ")");
 			}
 
-			it = buscarEstacion(alto * ancho - ancho).getColaPers().iterator(); // Para
-																			// los
-																			// JEDI
-																			// y
-																			// FR
-
+			it = buscarEstacion(alto * ancho - ancho).getColaPers().iterator(); // Para los Contrabandistas
+																			
 			while (it.hasNext() == true) {
 
 				persAux = it.next();
 				out.println("(ruta:" + persAux.getMarcaId() + ":" + persAux.mostrarCamino() + ")");
 			}
 
-			it = buscarEstacion(alto * ancho - 1).getColaPers().iterator(); // Para
-																		// los
-																		// JEDI
-																		// y FR
-
+			it = buscarEstacion(alto * ancho - 1).getColaPers().iterator(); // Para los Imperiales
+																		
 			while (it.hasNext() == true) {
 
 				persAux = it.next();
@@ -617,7 +860,7 @@ public class Galaxia {
 
 		}
 
-		if (fin == false) {
+		if (finJuego() == false) {
 
 			out.println("===============================================");
 			out.println("(turno:" + turno + ")");
@@ -638,129 +881,7 @@ public class Galaxia {
 			// Mostrar el mapa de la Galaxia
 			// ------------------------------------
 
-			int[] vArcos;
-			int x = 0;
-			int y = 0;
-			// TODO 2.0 Attack of the Pairs
-			// vArcos = grafoGal.devolverArcos(); // Le pasamos los arcos que
-			// existen en el grafo, para no dibujar '|' o '_' k no correspondan
-			Boolean arcoDer = false;
-			Boolean arcoBajo = true;
-
-			out.println();
-			out.print(" ");
-
-			for (int i = 0; i < (ancho * 2) - 1; i++) {
-
-				out.print('_');
-			}
-
-			out.println();
-
-			for (int i = 0; i < alto; i++) {
-
-				out.print('|');
-
-				for (int j = 0; j < ancho; j++) {
-
-					arcoBajo = true;
-
-					if (listaEstaciones[i][j].hayPersonajes() == true) {
-						if (listaEstaciones[i][j].cuantosPJ() > 1) {
-							out.print(listaEstaciones[i][j].cuantosPJ()); // Si
-																				// hay
-																				// mas
-																				// de
-																				// 2
-																				// personajes
-																				// en
-																				// la
-																				// misma
-																				// estacion,
-																				// mostrar
-																				// el
-																				// numero
-																				// de
-																				// los
-																				// mismos
-						} else {
-							out.print(listaEstaciones[i][j].sacarPJ().getMarcaId());
-						}
-					} else {
-						y = 0;
-						arcoBajo = false;
-
-						while (y < vArcos.length && arcoBajo == false) {
-
-							if (vArcos[y] == i * ancho + j) {
-								if (vArcos[y + 1] == (vArcos[y] + ancho)) // Si
-																			// [y+1]
-																			// es
-																			// ==
-																			// [y]+ancho,
-																			// entonces
-																			// se
-																			// trate
-																			// de
-																			// un
-																			// arco
-																			// con
-																			// la
-																			// estacion
-																			// de
-																			// debajo
-								{
-									out.print(' ');
-									arcoBajo = true;
-								}
-							}
-
-							y = y + 2; // Los arcos estan en parejas en el
-										// vector
-						} // Fin while arcoBajo
-					}
-
-					if (arcoBajo == false)
-						out.print('_'); // Imprimir antes de comprobar arcos a
-										// la der, por errores y eso
-
-					x = 0;
-					arcoDer = false;
-
-					while (x < vArcos.length && arcoDer == false) {
-
-						if (vArcos[x] == i * ancho + j) {
-							if (vArcos[x + 1] == (vArcos[x] + 1)) // Si [x+1] es
-																	// == [x]+1,
-																	// entonces
-																	// se trate
-																	// de un
-																	// arco con
-																	// la
-																	// estacion
-																	// a la
-																	// derecha
-							{
-								out.print(' ');
-								arcoDer = true;
-							}
-						}
-
-						x = x + 2; // Los arcos estan en parejas en el vector
-					} // Fin while arcoDer
-
-					if (arcoDer == false)
-						out.print('|');
-
-				} // Fin for j
-
-				out.println();
-
-			} // Fin for i
-
-			out.print(" ");
-
-			out.println();
+			mapaAFichero(out);
 
 			// ------------------------------------
 			// Mostrar estaciones con midiclorianos
@@ -803,125 +924,25 @@ public class Galaxia {
 						out.println(it.next().toString());
 					}
 				}
-			}
+			}			
 
-		} else // Si ha terminado la simulacion, imprimir lo siguiente
-		{
-			// La simulacion ha terminado
-			out.println();
-			out.println("---------------------------");
-			out.println("La simulación ha terminado|");
-			out.println("---------------------------");
-
-			out.println("La puerta de salida se encontraba en la estación " + id_salida);
-
-			out.print("Estado de la puerta: ");
-			if (puertaGal.isEstado() == true) {
-				out.println("ABIERTA");
-			} else {
-				out.println("CERRADA");
-			}
-
-			out.print("La combinación es:");
-			out.println(puertaGal.mostrarVectorCfgString());
-			out.println(" y su profundidad es " + puertaGal.getProfundidad());
-			out.print("Se han probado los midiclorianos: " + puertaGal.getProbados().arbolAString());
-			out.println();
-			out.println();
-
-			// ----------------------
-			// Mostrando estaciones
-			// ----------------------
-			out.println("Id Estación | Midiclorianos restantes");
-
-			for (int i = 0; i < alto; i++) {
-
-				for (int j = 0; j < ancho; j++) {
-
-					if (listaEstaciones[i][j].hayMidis() == true) {
-						out.print("     " + listaEstaciones[i][j].getId() + "      | ");
-						out.print(listaEstaciones[i][j].mostrarListaStr());
-						out.println();
-					}
-				}
-			}
-
-			// ----------------------
-			// Mostrando personajes
-			// ----------------------
-
-			out.println();
-			out.println("Personajes:");
-			out.println("-------------------------------------------");
-
-			for (int i = 0; i < alto; i++) {
-
-				for (int j = 0; j < ancho; j++) {
-
-					Iterator<Personaje> it = listaEstaciones[i][j].getColaPers().iterator();
-
-					while (it.hasNext()) {
-
-						persAux = it.next();
-						out.println(persAux.toString());
-					}
-				}
-			}
-			out.println("-------------------------------------------");
-
-			// ----------------------
-			// Mostrando ganadores
-			// ----------------------
-			out.println();
-			out.println("Ganadores:");
-			out.println("-------------------------------------------");
-
-			if (puertaGal.isEstado() == true) // Si puerta abierta, ganan los
-												// rebeldes
-			{
-				Iterator<Personaje> it = buscarEstacion(id_salida).getColaPers().iterator();
-
-				while (it.hasNext() == true) {
-
-					out.print("Ganador/es: ");
-					persAux = it.next();
-					out.println(persAux.toString());
-				}
-			} else // Si puerta cerrada, los imperiales, que pueden estar en
-					// cualquier estacion de la galaxia
-			{
-				for (int i = 0; i < alto; i++) {
-
-					for (int j = 0; j < ancho; j++) {
-
-						Iterator<Personaje> it = listaEstaciones[i][j].getColaPers().iterator();
-
-						while (it.hasNext()) {
-
-							persAux = it.next();
-							if (persAux.getTipoPj() == "Imperial" || persAux.getTipoPj() == "ImperialEste") // Solo
-																											// los
-																											// imperiales
-																											// ganan
-							{
-								out.println(persAux.toString());
-							}
-						}
-					}
-				}
-			}
-
-			out.println("-------------------------------------------");
+			out.close(); // Cerrar flujo	
+		} 
+		else // Si ha terminado la simulacion, imprimir lo siguiente
+		{		
+			finAFichero(out);
+			out.close(); // Cerrar flujo
 		}
-
-		out.close(); // Cerrar flujo
-
 	}
 
 	private boolean activarEstaciones() {
+		
 		boolean fin = false;
+		
 		for (int i = 0; i<ancho && fin == false;i++){
+			
 			for (int j = 0; j<alto && fin == false;j++){
+				
 				fin = listaEstaciones[i][j].activarPJ(this);
 			}
 		}
@@ -929,236 +950,36 @@ public class Galaxia {
 	}
 	
 	private void reiniciarTurno(){
+		
 		for (int i = 0; i<ancho;i++){
+			
 			for (int j = 0; j<alto;j++){
+				
 				listaEstaciones[i][j].reiniciarTurnoPj();
 			}
 		}
 	}
 	
 	private void simular() {
+		
 		boolean fin = false;
+		
 		for (int turno = 0;turno < 50 && fin == false; turno++){
+			
 			fin = activarEstaciones();
+			
 			if (fin == false)
 				reiniciarTurno();
+			
 			infoTurno(turno);
+			
 			try {
-				datosAFichero(turno,fin); //TODO Este booleano que se hace
+				datosAFichero(turno); 
 			} catch (IOException e) {}
 		}
 		mostrarFin();
 	}
 
-	private void mostrarFin() {
-		
-		System.out.println();
-		System.out.println("---------------------------");
-		System.out.println("La simulación ha terminado|");
-		System.out.println("---------------------------");
-
-		System.out.println("La puerta de salida se encontraba en la estación " + id_salida);
-
-		System.out.print("Estado de la puerta: ");
-		if (puertaGal.isEstado() == true) {
-			System.out.println("ABIERTA");
-		} else {
-			System.out.println("CERRADA");
-		}
-
-		System.out.print("La combinación es:");
-		puertaGal.mostrarVectorCfg();
-		System.out.println(" y su profundidad es " + puertaGal.getProfundidad());
-		System.out.print("Se han probado los midiclorianos: ");
-		puertaGal.getProbados().inOrder();
-		System.out.println();
-
-		// ----------------------
-		// Mostrando tablero final
-		// ----------------------
-		System.out.println("El tablero al finalizar la simulación es el siguiente:");
-		int[] vArcos;
-		int x = 0;
-		int y = 0;
-		// vArcos = grafoGal.devolverArcos(); // Le pasamos los arcos que
-		// existen en el grafo, para no dibujar '|' o '_' k no correspondan
-		// TODO 3.0 Revenge of the Pair
-		Boolean arcoDer = false; // Para comprobar si hay un arco a la derecha
-									// del nodo actual
-		Boolean arcoBajo = true; // Para comprobar si hay un arco debajo del
-									// nodo actual
-
-		System.out.println();
-		System.out.print(" ");
-
-		for (int i = 0; i < (ancho * 2) - 1; i++) {
-
-			System.out.print('_');
-		}
-
-		System.out.println();
-
-		for (int i = 0; i < alto; i++) {
-
-			System.out.print('|');
-
-			for (int j = 0; j < ancho; j++) {
-
-				arcoBajo = true;
-
-				if (listaEstaciones[i][j].hayPersonajes() == true) {
-					if (listaEstaciones[i][j].cuantosPJ() > 1) {
-						System.out.print(listaEstaciones[i][j].cuantosPJ()); // Si
-																					// hay
-																					// mas
-																					// de
-																					// 2
-																					// personajes
-																					// en
-																					// la
-																					// misma
-																					// estacion,
-																					// mostrar
-																					// el
-																					// numero
-																					// de
-																					// los
-																					// mismos
-					} else {
-						System.out.print(listaEstaciones[i][j].sacarPJ().getMarcaId());
-					}
-				} else {
-					y = 0;
-					arcoBajo = false;
-
-					while (y < vArcos.length && arcoBajo == false) {
-
-						if (vArcos[y] == i * ancho + j) {
-							if (vArcos[y + 1] == (vArcos[y] + ancho)) // Si
-																		// [y+1]
-																		// es ==
-																		// [y]+ancho,
-																		// entonces
-																		// se
-																		// trate
-																		// de un
-																		// arco
-																		// con
-																		// la
-																		// estacion
-																		// de
-																		// debajo
-							{
-								System.out.print(' ');
-								arcoBajo = true;
-							}
-						}
-
-						y = y + 2; // Los arcos estan en parejas en el vector
-					} // Fin while arcoBajo
-				}
-
-				if (arcoBajo == false)
-					System.out.print('_'); // Imprimir antes de comprobar arcos
-											// a la der, por errores y eso
-
-				x = 0;
-				arcoDer = false;
-
-				while (x < vArcos.length && arcoDer == false) {
-
-					if (vArcos[x] == i * ancho + j) {
-						if (vArcos[x + 1] == (vArcos[x] + 1)) // Si [x+1] es ==
-																// [x]+1,
-																// entonces se
-																// trate de un
-																// arco con la
-																// estacion a la
-																// derecha
-						{
-							System.out.print(' ');
-							arcoDer = true;
-						}
-					}
-
-					x = x + 2; // Los arcos estan en parejas en el vector
-				} // Fin while arcoDer
-
-				if (arcoDer == false)
-					System.out.print('|');
-
-			} // Fin for j
-
-			System.out.println();
-
-		} // Fin for i
-
-		System.out.print(" ");
-
-		System.out.println();
-
-		System.out.println();
-
-		// ----------------------
-		// Mostrando estaciones
-		// ----------------------
-		System.out.println("Id Estación | Midiclorianos restantes");
-
-		for (int i = 0; i < alto; i++) {
-
-			for (int j = 0; j < ancho; j++) {
-
-				if (listaEstaciones[i][j].hayMidis() == true) {
-					System.out.print("     " + listaEstaciones[i][j].getId() + "      | ");
-					listaEstaciones[i][j].mostrarLista();
-					System.out.println();
-				}
-			}
-		}
-
-		// ----------------------
-		// Mostrando personajes
-		// ----------------------
-		System.out.println();
-		System.out.println("Personajes:");
-		System.out.println("-------------------------------------------");
-
-		for (int i = 0; i < alto; i++) {
-
-			for (int j = 0; j < ancho; j++) {
-
-				listaEstaciones[i][j].mostrarPersonajes();
-			}
-		}
-		System.out.println("-------------------------------------------");
-
-		// ----------------------
-		// Mostrando ganadores
-		// ----------------------
-		System.out.println();
-		System.out.println("Ganadores:");
-		System.out.println("-------------------------------------------");
-
-		if (puertaGal.isEstado() == true) 
-		{
-			System.out.println("Ganador/es: ");
-			buscarEstacion(id_salida).mostrarPersonajes();
-		} 
-		else 
-		{
-			for (int i = 0; i < alto; i++) {
-
-				for (int j = 0; j < ancho; j++) {
-
-					listaEstaciones[i][j].mostrarImp();
-					}
-				}
-			}
-		
-
-		System.out.println("-------------------------------------------");
-	}
-	
 	public static void main(String[] args) {
 
 		Galaxia pepe;
