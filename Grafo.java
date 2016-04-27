@@ -1,6 +1,5 @@
 package DEV;
 
-import DEV.Personaje.dir;
 import java.util.*;
 
 /**
@@ -67,6 +66,7 @@ public class Grafo {
    	* 
    	* @param alto Altura de la galaxia
    	* @param ancho Anchura de la galaxia
+   	* @param puertaGal id Estacion de salida
    	* 
    	*/
     Grafo(int alto, int ancho, int puertaGal){
@@ -798,7 +798,7 @@ public class Grafo {
     			}		
     		}
     	}
-      return listaArcos; // Como los arcos siempre van en parejas, es facil distinguir sus uniones en su posterior uso 	
+      return listaArcos; 
     }
 
 	public int getNumNodos() {
@@ -807,6 +807,19 @@ public class Grafo {
 
 	public void setNumNodos(int numNodos) {
 		this.numNodos = numNodos;
+	}
+	
+	public static void main(String[] args) {
+
+		Grafo pepe = new Grafo (4,4,5);
+		
+		pepe.procesarParedes(4, 33);
+		pepe.mostrarNodos();
+		pepe.mostrarArcos();
+		
+		
+		System.out.println(pepe.devolverArcos().size());
+		System.out.println(pepe.devolverArcos().get(0) + "+" + pepe.devolverArcos().get(1));
 	}
 	
 }
