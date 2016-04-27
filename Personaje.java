@@ -60,6 +60,7 @@ public abstract class Personaje {
                 haMovido = false;
                 camino = new LinkedList<dir>();
                 pilaMidi = new LinkedList<Midi>();
+                hallarCamino(gal);
         }
         
         public void aniadirCamino(dir Dir){
