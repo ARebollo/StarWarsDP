@@ -291,9 +291,12 @@ public class Estacion implements Comparable<Estacion> {
    	 * 
    	 */
 	public boolean activarPJ (Galaxia gal){
+		
 		Personaje persAux;
 		boolean fin = false;
-		for (int i = 0; i < colaPers.size() && fin == false; i++) {
+		int cuantos = colaPers.size();
+		
+		for (int i = 0; i < cuantos && fin == false; i++) {
 			
 			persAux = colaPers.remove(0);
 			

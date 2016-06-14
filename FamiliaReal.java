@@ -1,5 +1,6 @@
 package DEV;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,8 +35,9 @@ public class FamiliaReal extends Personaje{
 		List<Integer> listaAux = new LinkedList<Integer>();
 		Grafo grafoAux = gal.getGrafoGal();
 		
-		listaAux= grafoAux.encontrarCaminoList(0, -1, gal.getId_salida(), listaAux);
-		int dirAnt = 0;
+		listaAux = grafoAux.encontrarCaminoList(0, -1, gal.getId_salida(), listaAux);
+		
+		int dirAnt = listaAux.remove(0);
 		int dirSig;
 		
 		while (listaAux.isEmpty() == false) {
