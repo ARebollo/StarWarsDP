@@ -47,14 +47,17 @@ public class Jedi extends Personaje{
 
 	@Override
 	protected void tocarPuerta(Puerta puertaGal) {
-		
-		puertaGal.probarMidicloriano(sacarMidi());	
+		if (tieneMidis())
+		{
+			System.out.println("Probando Midi Con JEDI. Quedan " + cuantosMidis() + " midis.");
+			puertaGal.probarMidicloriano(sacarMidi());	
+		}
 	}
 	
 	@Override
 	protected void tocarMidi(Estacion estacion) {
 		
-		if (estacion.hayMidi())
+		if (estacion.hayMidis())
 		{
 		 aniadirMidi(estacion.sacarMidi());
 		}

@@ -19,7 +19,7 @@ public class Galaxia {
 	private Estacion[][] listaEstaciones;
 	private Queue<Midi> listaMidiGal;
 	private Grafo grafoGal;
-	private String nombreFichero;
+
 
 	/**
 	 * Constructor default de la clase Galaxia <br>

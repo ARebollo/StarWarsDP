@@ -97,7 +97,7 @@ public class Imperial extends Personaje {
 	@Override
 	protected void tocarMidi(Estacion estacion) {
 		
-		if (getIdEstacion() % 2 == 0)
+		if (getIdEstacion() % 2 == 0 && tieneMidis())
 		{
 		 getPilaMidi().remove();
 		}
