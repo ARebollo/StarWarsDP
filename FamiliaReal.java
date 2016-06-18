@@ -52,7 +52,6 @@ public class FamiliaReal extends Personaje{
 	protected void tocarPuerta(Puerta puertaGal) {
 		if (tieneMidis())
 		{
-			System.out.println("Probando Midi Con FAMREAL. Quedan " + cuantosMidis() + " midis.");
 			puertaGal.probarMidicloriano(sacarMidi());	
 		}
 	}
