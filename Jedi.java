@@ -33,7 +33,7 @@ public class Jedi extends Personaje{
 		Grafo grafoAux = gal.getGrafoGal();
 		
 		listaAux= grafoAux.manoDerecha(0, gal.getId_salida(), gal.getAncho());
-		int dirAnt = 0;
+		int dirAnt = listaAux.remove(0);
 		int dirSig;
 		
 		while (listaAux.isEmpty() == false) {

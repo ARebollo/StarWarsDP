@@ -469,47 +469,6 @@ public class Grafo {
       }
       
      /**
-      * Metodo que dado un inicio y final devuelve el camino entre los dos puntos de una matriz. NO DEVUELVE EL NODO ORIGEN
-      * 
-      * @param i Es el nodo actual, en la primera llamada es el inicial
-      * @param x Es el nodo del que viene, para no volver hacia atrás
-      * @param k Es el nodo al que se desea llegar
-      * 
-      * @return Devuelve el camino en forma de cadena
-      * 
-      */
-      
-      // TODO BORRAR
-      private String encontrarCamino(int i, int x, int k){
-      
-     	 String aux = "";
-     	 String ultimo = "" + k;
-     	 String aux2 = "";
-     	
- 
-     	 if (arcos[i][k] != Grafo.INFINITO )
- 		 {
- 		  aux += k +" ";
- 		 }
-     	 else for (int j = 0; j < getNumNodos() && aux.endsWith(" " + ultimo) == false; j++){
-     	 
-     		 if (arcos[i][j] != Grafo.INFINITO && i != j && j != x)
-     		 {
-     		  aux2 = aux;
-     		  aux += j;
-     	      aux = aux + " " + encontrarCamino(j, i, k);
-     	      
-     	      	if (aux.endsWith(" " + ultimo + " ") == false)   // Quitar del camino final los que hemos ido probando y no han resultado
-     	      	{
-     	      	 aux = aux2;
-     	      	}
-     		 }   		 
-     	 }
-
-        return aux;		 
-      }
-      
-      /**
        * Metodo que dado un inicio y final devuelve el camino entre los dos puntos de una matriz. NO DEVUELVE EL NODO ORIGEN
        * 
        * @param i Es el nodo actual, en la primera llamada es el inicial
@@ -521,11 +480,15 @@ public class Grafo {
        * 
        */
        protected List<Integer> encontrarCaminoList(int i, int x, int k, List<Integer> Camino){
+    	 
+    	 if (Camino.isEmpty() == true)
+    	 {
+          Camino.add(0, i); // Añadimos el origen
+    	 }
 
       	 if (arcos[i][k] != Grafo.INFINITO )
   		 {
-  		  Camino.add(k);
-  		  //TODO Podriamos añadir el origen?
+  		  Camino.add(k);  
   		 }
       	 else for (int j = 0; j < getNumNodos() && Camino.contains(k) == false; j++){
       	 
@@ -536,7 +499,7 @@ public class Grafo {
 
       	      	if (Camino.contains(k) == false)   // Quitar del camino final los que hemos ido probando y no han resultado
       	      	{
-      	      	 Camino.remove(j);
+      	      	 Camino.remove(Camino.indexOf(j));
       	      	}
       		 }   		 
       	 }
@@ -558,23 +521,48 @@ public class Grafo {
           int anterior = i;
           boolean fin = false;
           List<Integer> camino = new LinkedList<Integer>();
+          boolean haMovido = false;
           //MOVIMIENTO INICIAL
-          if (arcos[i][i+ancho] != Grafo.INFINITO)
-          {
-           camino.add(i+ancho);
-           i+=ancho;
-          }         
-          else if (arcos[i][i+1] != Grafo.INFINITO)
-          {
-           camino.add(i+1);
-           i++;
+          
+          camino.add(i); // Añadimos el origen
+          
+          if ((i+1)/ancho == i/ancho)
+          {	  
+        	  if (arcos[i][i+1] != Grafo.INFINITO)
+        	  {
+        		  camino.add(i+1);
+        		  i++;
+        		  haMovido = true;
+        	  }  
           }
-          else 
+          
+          if (i+ancho < getNumNodos() && haMovido == false)
           {
-           camino.add(i-ancho);
-           i -= ancho;
+        	  if (arcos[i][i+ancho] != Grafo.INFINITO)
+        	  {
+        		  camino.add(i+ancho);
+        		  i+=ancho;
+        		  haMovido = true;
+        	  }       	  
           }
-          boolean haMovido;
+          
+          if ((i-1)/ancho == i/ancho && haMovido == false && i != 0)
+          {
+        	  if (arcos[i][i-1] != Grafo.INFINITO)
+        	  {
+        		  camino.add(i-1);
+    		  	  i--;
+    		  	  haMovido = true;
+    	  	  }
+          }
+          
+          if (haMovido == false) 
+          {
+        	  camino.add(i-ancho);
+        	  i -= ancho;
+        	  haMovido = true;
+          }
+          
           while (!fin)
           {
         	  haMovido = false;
@@ -606,11 +594,11 @@ public class Grafo {
                       {
                     	  camino.add(i-ancho);
                     	  anterior = i;
-                    	  i-=ancho;
+                    	  i -= ancho;
                     	  haMovido = true;
                       }
                   }
-                  if ((i-1)/ancho == i/ancho && haMovido == false)
+                  if ((i-1)/ancho == i/ancho && haMovido == false && i != 0)
                   {
                       camino.add(i-1);
                       anterior = i;
@@ -636,11 +624,11 @@ public class Grafo {
                       {
                           camino.add(i-ancho);
                           anterior = i;
-                          i-=ancho;
+                          i -= ancho;
                           haMovido = true;
                       }
                   }
-                  if ((i-1)/ancho == i/ancho && haMovido == false)
+                  if ((i-1)/ancho == i/ancho && haMovido == false && i != 0)
                   {
                   	  if (arcos[i][i-1] != Grafo.INFINITO)
                       {
@@ -663,7 +651,7 @@ public class Grafo {
               }
               else if(i-anterior == ancho) //Si venimos desde arriba comprobamos izquierda, abajo, derecha, arriba
               {
-                  if ((i-1)/ancho == i/ancho)
+                  if ((i-1)/ancho == i/ancho && i != 0)
                   {
                 	  if (arcos[i][i-1] != Grafo.INFINITO)
                 	  {
@@ -693,13 +681,13 @@ public class Grafo {
                   			haMovido = true;
                   		}
                   }
-                  if (i-ancho >= 0 && haMovido == false)
+                  if (i-ancho >= 0 && haMovido == false )
                   {
                       if(arcos[i][i-ancho] != Grafo.INFINITO)
                       {
                           camino.add(i-ancho);
                           anterior = i;
-                          i-=ancho;
+                          i -= ancho;
                           haMovido = true;
                       }
                   }
@@ -712,11 +700,11 @@ public class Grafo {
                       {
                           camino.add(i-ancho);
                           anterior = i;
-                          i-=ancho;
+                          i -= ancho;
                           haMovido = true;
                       }
                   }
-                  if ((i-1)/ancho == i/ancho && haMovido == false)
+                  if ((i-1)/ancho == i/ancho && haMovido == false && i != 0)
                   {
                 	  if (arcos[i][i-1] != Grafo.INFINITO)
                 	  {
@@ -754,29 +742,6 @@ public class Grafo {
           
         return camino;
       }
-      
-   /**
-    * Metodo que devuelve la ruta de los FamiliaReal en un vector de enteros
-    *
-    * @param puertaGal Puerta de salida de la Galaxia
-    * 
-    * @return Vector de enteros con la id de los nodos de la ruta
-    * 
-    */
-    public int[] asignarMidis(int puertaGal){
-    	
-    	List<Integer> aux = new LinkedList<Integer>();
-    	aux = encontrarCaminoList(0, -1, puertaGal,aux);
-
-  	    int[] vectorInt = new int[aux.size()];	// Crear un vector de Int para almacenar los valores
-  	  
-  	    for (int i = 0; i < aux.size(); i++){ 		  
-									
-  		    vectorInt[i] = aux.get(i);	
-  	    } 
-  	    
-  	  return vectorInt;
-    }
     
     /**
      * Metodo que devuelve los arcos que existen en el tablero de la galaxia en forma de un vector de enteros
@@ -819,7 +784,24 @@ public class Grafo {
 		
 		
 		System.out.println(pepe.devolverArcos().size());
-		System.out.println(pepe.devolverArcos().get(0) + "+" + pepe.devolverArcos().get(1));
+		Iterator it = pepe.devolverArcos().iterator();
+		
+		while (it.hasNext()){
+				
+		System.out.println(it.next());
+		}
+		
+		List<Integer> lista = new LinkedList<Integer>();
+		
+		lista = pepe.manoDerecha(12, 15, 4);
+		
+		Iterator it2 = lista.iterator();
+		
+		while (it2.hasNext()){
+			
+			System.out.println(it2.next());
+		}
+		
 	}
 	
 }

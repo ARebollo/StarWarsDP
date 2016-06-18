@@ -45,9 +45,19 @@ public class Imperial extends Personaje {
 		
 		
 		int dirAnt, dirSig;
-		dirAnt = gal.getId_salida();
+
+		listaAux = grafoAux.encontrarCaminoList(gal.getAncho() * gal.getAlto() - 1, -1, gal.getAncho() - 1, listaAux);
+		dirAnt = listaAux.remove(0);
+		
+		while (listaAux.isEmpty() == false) {
+			
+			dirSig = listaAux.remove(0);
+			aniadirCamino(interpretarCamino(dirAnt,dirSig));
+			dirAnt = dirSig;
+		}
 		
 		listaAux = grafoAux.encontrarCaminoList(gal.getAncho() - 1, -1, 0, listaAux);
+		dirAnt = listaAux.remove(0);
 		
 		while (listaAux.isEmpty() == false) {
 			
@@ -57,6 +67,7 @@ public class Imperial extends Personaje {
 		}
 		
 		listaAux = grafoAux.encontrarCaminoList(0, -1, grafoAux.getNumNodos() - gal.getAncho(), listaAux);
+		dirAnt = listaAux.remove(0);
 		
 		while (listaAux.isEmpty() == false) {
 			
@@ -66,6 +77,7 @@ public class Imperial extends Personaje {
 		}
 		
 		listaAux = grafoAux.encontrarCaminoList(grafoAux.getNumNodos() - gal.getAncho(), -1, grafoAux.getNumNodos() - 1, listaAux);
+		dirAnt = listaAux.remove(0);
 		
 		while (listaAux.isEmpty() == false) {
 			
@@ -78,7 +90,8 @@ public class Imperial extends Personaje {
 	@Override
 	protected void tocarPuerta(Puerta puertaGal) {
 		
-		puertaGal.cerrarPuerta();	
+		puertaGal.cerrarPuerta();
+		
 	}
 
 	@Override

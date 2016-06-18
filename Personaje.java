@@ -280,25 +280,30 @@ public abstract class Personaje {
 		
 		//Convierte un movimiento de una casilla a otra en un Dir
 		protected dir interpretarCamino(int origen, int destino){
-			if (origen<destino && origen != destino-1)
+			if (origen < destino && origen != destino - 1)
 				return dir.S;
-			if (origen == destino -1)
+			if (origen == destino - 1)
 				return dir.E;
-			if (origen == destino +1)
+			if (origen == destino + 1)
 				return dir.O;
-			if (origen>destino && origen !=  destino+1)
+			if (origen > destino && origen !=  destino + 1)
 				return dir.N;
 			return null;
 		}
 		
+		/*
+		 * 
+		 */
 		private int dirACamino(dir direccion, int ancho){
+			
 			int sig = 0;
+			
 			switch (direccion){
 			case S:
 				sig = idEstacion + ancho;
 				break;
 			case E:
-				sig = idEstacion +1;
+				sig = idEstacion + 1;
 				break;
 			case N:
 				sig = idEstacion - ancho;
@@ -313,16 +318,24 @@ public abstract class Personaje {
 		//Mueve el personaje
 		public void turnoPj(Galaxia gal){
 			
+			setHaMovido(true);
+			
 			if (gal.getId_salida() == idEstacion)
 			{
-			 tocarPuerta(gal.getPuertaGal());	
+				tocarPuerta(gal.getPuertaGal());	
+			 
+			 	if (camino.peek() != null)
+			 	{
+			 		gal.buscarEstacion(dirACamino(camino.peek(), gal.getAncho())).aniadirPj(this);  // Obtiene el camino del pj, busca la estacion con esa id y luego añade el personaje
+			 		setIdEstacion(dirACamino(camino.remove(), gal.getAncho()));
+			 	}			 
 			}
 			else
 			{
-			 gal.buscarEstacion(dirACamino(camino.peek(), gal.getAncho())).aniadirPj(this);  // Obtiene el camino del pj, busca la estacion con esa id y luego añade el personaje
-			 setIdEstacion(dirACamino(camino.remove(), gal.getAncho()));
+				gal.buscarEstacion(dirACamino(camino.peek(), gal.getAncho())).aniadirPj(this);  // Obtiene el camino del pj, busca la estacion con esa id y luego añade el personaje
+				setIdEstacion(dirACamino(camino.remove(), gal.getAncho()));
 			 
-			 tocarMidi(gal.buscarEstacion(idEstacion));
+				tocarMidi(gal.buscarEstacion(idEstacion));
 			}
 		}
 		

@@ -1,5 +1,6 @@
 package DEV;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,7 +36,8 @@ public class Contrabandista extends Personaje {
 		Grafo grafoAux = gal.getGrafoGal();
 		
 		listaAux= grafoAux.manoDerecha(gal.getAlto() * gal.getAncho() - gal.getAncho(), gal.getId_salida(), gal.getAncho());
-		int dirAnt = 0;
+		
+		int dirAnt = listaAux.remove(0);
 		int dirSig;
 		
 		while (listaAux.isEmpty() == false) {

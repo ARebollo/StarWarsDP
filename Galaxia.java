@@ -122,8 +122,12 @@ public class Galaxia {
 	private void repartirMidi() {
 
 		Estacion estAux;
-		int[] vRuta = grafoGal.asignarMidis(id_salida);
-
+		
+		List<Integer> ruta = new LinkedList<Integer>();
+		ruta = grafoGal.encontrarCaminoList(0, -1, id_salida, ruta);
+		
+		Iterator<Integer> it = ruta.iterator();
+		
 		estAux = buscarEstacion(0); // El origen no esta en la ruta, asique lo
 									// aniadimos a mano
 
@@ -135,9 +139,9 @@ public class Galaxia {
 
 		// Repartir entre estaciones, siguiendo la ruta de los FamiliaReal
 
-		for (int i = 0; i < vRuta.length; i++) {
+		while (it.hasNext()) {
 
-			estAux = buscarEstacion(vRuta[i]);
+			estAux = buscarEstacion(it.next());
 
 			for (int j = 0; j < 5 && listaMidiGal.isEmpty() == false; j++) {
 
@@ -234,6 +238,7 @@ public class Galaxia {
 
 								//Impedimos que se cree más de una galaxia
 								galCreada = true;
+								mostrarMapa();
 							}
 
 						} catch (ConfigNoValida e) {
@@ -248,6 +253,8 @@ public class Galaxia {
 								Integer.parseInt(vCampos.get(3)), 0, this);
 						
 						listaEstaciones[0][0].aniadirPj(persAux);
+						System.out.println(persAux.mostrarCamino());
+						System.out.println(persAux);
 						break;
 
 					case ("JEDI"):
@@ -256,6 +263,8 @@ public class Galaxia {
 								Integer.parseInt(vCampos.get(3)), 0,this);
 						
 						listaEstaciones[0][0].aniadirPj(persAux);
+						System.out.println(persAux.mostrarCamino());
+						System.out.println(persAux);
 						break;
 
 					case ("IMPERIAL"):
@@ -264,6 +273,8 @@ public class Galaxia {
 								Integer.parseInt(vCampos.get(3)), (alto * ancho) - 1,this);
 						
 						listaEstaciones[alto - 1][ancho - 1].aniadirPj(persAux);
+						System.out.println(persAux.mostrarCamino());
+						System.out.println(persAux);
 						break;
 
 					case ("CONTRABANDISTA"):
@@ -272,6 +283,8 @@ public class Galaxia {
 								Integer.parseInt(vCampos.get(3)), (alto * ancho) - ancho,this);
 						
 						listaEstaciones[alto - 1][0].aniadirPj(persAux);
+						System.out.println(persAux.mostrarCamino());
+						System.out.println(persAux);
 						break;
 					default:
 						break;
@@ -394,6 +407,8 @@ public class Galaxia {
 			System.out.print('_');
 		}
 		
+		System.out.println();
+		
 		for (int i = 0; i < alto; i++) {
 
 			System.out.print('|');
@@ -479,6 +494,8 @@ public class Galaxia {
 
 			out.print('_');
 		}
+		
+		out.println("");
 		
 		for (int i = 0; i < alto; i++) {
 
@@ -939,9 +956,9 @@ public class Galaxia {
 		
 		boolean fin = false;
 		
-		for (int i = 0; i<ancho && fin == false;i++){
+		for (int i = 0; i < alto && fin == false; i++){
 			
-			for (int j = 0; j<alto && fin == false;j++){
+			for (int j = 0; j < ancho && fin == false; j++){
 				
 				fin = listaEstaciones[i][j].activarPJ(this);
 			}
@@ -951,9 +968,9 @@ public class Galaxia {
 	
 	private void reiniciarTurno(){
 		
-		for (int i = 0; i<ancho;i++){
+		for (int i = 0; i < alto;i++){
 			
-			for (int j = 0; j<alto;j++){
+			for (int j = 0; j < ancho;j++){
 				
 				listaEstaciones[i][j].reiniciarTurnoPj();
 			}
@@ -964,7 +981,10 @@ public class Galaxia {
 		
 		boolean fin = false;
 		
-		for (int turno = 0;turno < 50 && fin == false; turno++){
+		System.out.println("------------asdsdasdasda----------");
+		listaEstaciones[9][4].mostrarPersonajes();
+		
+		for (int turno = 1; turno < 51 && fin == false; turno++){
 			
 			fin = activarEstaciones();
 			
@@ -978,22 +998,6 @@ public class Galaxia {
 			} catch (IOException e) {}
 		}
 		mostrarFin();
-	}
-
-	public static void main(String[] args) {
-
-		Galaxia pepe;
-
-		try {
-			pepe = new Galaxia(args[0]);
-			pepe.simular();
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		} catch (ConfigNoValida e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	public Grafo getGrafoGal() {
@@ -1055,5 +1059,21 @@ public class Galaxia {
 	//True si la puerta se ha abierto
 	public boolean finJuego(){
 		return puertaGal.isEstado();
+	}
+
+	public static void main(String[] args) {
+	
+		Galaxia pepe;
+	
+		try {
+			pepe = new Galaxia(args[0]);
+			pepe.simular();
+		} catch (IOException e) {
+	
+			e.printStackTrace();
+		} catch (ConfigNoValida e) {
+			e.printStackTrace();
+		}
+	
 	}
 }
