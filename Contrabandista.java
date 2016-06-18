@@ -52,7 +52,7 @@ public class Contrabandista extends Personaje {
 	protected void tocarPuerta(Puerta puertaGal) {
 		if (tieneMidis())
 		{
-			System.out.println("Probando Midi Con CONTR. Quedan " + cuantosMidis() + " midis.");
+		
 			puertaGal.probarMidicloriano(sacarMidi());	
 		}
 	}
