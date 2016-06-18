@@ -49,7 +49,6 @@ public class Jedi extends Personaje{
 	protected void tocarPuerta(Puerta puertaGal) {
 		if (tieneMidis())
 		{
-			System.out.println("Probando Midi Con JEDI. Quedan " + cuantosMidis() + " midis.");
 			puertaGal.probarMidicloriano(sacarMidi());	
 		}
 	}
