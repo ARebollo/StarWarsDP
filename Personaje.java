@@ -274,6 +274,14 @@ public abstract class Personaje {
 			
 			return pilaMidi.poll();
 		}
+		
+		public boolean tieneMidis(){
+			return !pilaMidi.isEmpty();
+		}
+		
+		public int cuantosMidis(){
+			return pilaMidi.size();
+		}
 
 		//Halla el camino que tiene que seguir el personaje. Lo implementa cada uno individualmente
 		public abstract void hallarCamino(Galaxia gal);
@@ -323,12 +331,12 @@ public abstract class Personaje {
 			if (gal.getId_salida() == idEstacion)
 			{
 				tocarPuerta(gal.getPuertaGal());	
-			 
 			 	if (camino.peek() != null)
 			 	{
 			 		gal.buscarEstacion(dirACamino(camino.peek(), gal.getAncho())).aniadirPj(this);  // Obtiene el camino del pj, busca la estacion con esa id y luego añade el personaje
 			 		setIdEstacion(dirACamino(camino.remove(), gal.getAncho()));
-			 	}			 
+			 	}
+			 	else gal.buscarEstacion(idEstacion).aniadirPj(this);
 			}
 			else
 			{

@@ -54,7 +54,7 @@ public class Puerta {
    	 * 
    	 */
 	public void setCombinacionList(List<Midi> list){
-		
+				
 		vectorCfg = new Midi[list.size()];
 		
 		for (int i = 0; i < list.size(); i++){
@@ -139,10 +139,11 @@ public class Puerta {
 	       
         int mit = izq + (der - izq)/2;
          //Insercion valor intermedio
-        
+        Combinacion.insertar(vector[mit]);
         if (izq<der && mit != 0)
         {
-        	Combinacion.insertar(vector[mit]);
+        	
+        	
          //Copia subvector derecho y llamada recursiva
          configurarCombinacion(vector, mit+1, der);
          
@@ -183,7 +184,7 @@ public class Puerta {
 			 Combinacion.eliminar(aux);
 			}
 		
-			if (Combinacion.altura() <= profundidad && Combinacion.numHojas() <= (Combinacion.numNodos()-Combinacion.numHojas()))
+			if (Combinacion.altura() <= profundidad && (Combinacion.numHojas() <= (Combinacion.numNodos()-Combinacion.numHojas()) ) )
 			{
 			 estado = true;
 			 System.out.println("THE GATES ARE OPEN");
@@ -200,25 +201,27 @@ public class Puerta {
    	 */
 	public void probarMidicloriano (Midi midi){  
 			
-			if (Probados.existe(midi) == true)
+			if (midi != null)
 			{
-			 System.out.println("ALARMA, TRAIDORES DEL IMPERIO DETECTADOS");
-			}
-			else
-			{
-			 Probados.insertar(midi);
-			}
-			
-			if (Combinacion.existe(midi) == true)
-			{
-			 Combinacion.eliminar(midi);
-			}
+				if (Probados.existe(midi) == true)
+				{
+					System.out.println("ALARMA, TRAIDORES DEL IMPERIO DETECTADOS");
+				}
+				else
+				{
+					Probados.insertar(midi);
+				}
+				if (Combinacion.existe(midi) == true)
+				{
+					Combinacion.eliminar(midi);
+				}
 		
-			if (Combinacion.altura() <= profundidad && Combinacion.numHojas() <= (Combinacion.numNodos()-Combinacion.numHojas()))
-			{
-			 estado = true;
-			 System.out.println("ABRIENDO PUERTA");
-			}	 
+				if (Combinacion.altura() <= profundidad && Combinacion.numHojas() <= (Combinacion.numNodos()-Combinacion.numHojas()))
+				{
+					estado = true;
+					System.out.println("ABRIENDO PUERTA");
+				}
+			}
 
 	}
 	

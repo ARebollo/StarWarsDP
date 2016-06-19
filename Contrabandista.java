@@ -1,6 +1,5 @@
 package DEV;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -51,14 +50,17 @@ public class Contrabandista extends Personaje {
 
 	@Override
 	protected void tocarPuerta(Puerta puertaGal) {
+		if (tieneMidis())
+		{
 		
-		puertaGal.probarMidicloriano(sacarMidi());	
+			puertaGal.probarMidicloriano(sacarMidi());	
+		}
 	}
 	
 	@Override
 	protected void tocarMidi(Estacion estacion) {
 		
-		if (estacion.hayMidi())
+		if (estacion.hayMidis())
 		{
 		 aniadirMidi(estacion.sacarMidi());
 		}

@@ -224,8 +224,7 @@ public class abb <T extends Comparable<T>> {
    	 */
     public boolean existe(T dato){
 
-    if (!esVacio()) {
-
+    if (raiz != null && raiz.dato != null) {
             if (dato.compareTo(raiz.dato) == 0) 
             {
              return true;
@@ -329,10 +328,7 @@ public class abb <T extends Comparable<T>> {
             }
         
       return a;
-    }
-
-    
-    
+    } 
     /**
    	 * Elimina un dato del arbol, y lo reestructura de manera correcta
    	 *

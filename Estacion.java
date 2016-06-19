@@ -263,10 +263,7 @@ public class Estacion implements Comparable<Estacion> {
 	public void setPuertaSalida(boolean puertaSalida) {
 		this.puertaSalida = puertaSalida;
 	}
-	
-	public boolean hayMidi() {
-		return !listaMidiEst.isEmpty();
-	}
+
 	
 	/**
    	 * Cambia el valor del booleano haMovido de cada Personaje que se encuentra en la estacion a False

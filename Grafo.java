@@ -784,7 +784,7 @@ public class Grafo {
 		
 		
 		System.out.println(pepe.devolverArcos().size());
-		Iterator it = pepe.devolverArcos().iterator();
+		Iterator<Pair<Integer,Integer>> it = pepe.devolverArcos().iterator();
 		
 		while (it.hasNext()){
 				
@@ -795,7 +795,7 @@ public class Grafo {
 		
 		lista = pepe.manoDerecha(12, 15, 4);
 		
-		Iterator it2 = lista.iterator();
+		Iterator<Integer> it2 = lista.iterator();
 		
 		while (it2.hasNext()){
 			
