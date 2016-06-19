@@ -1,6 +1,7 @@
 package DEV;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
 * Declaracion de la clase Puerta
@@ -141,9 +142,7 @@ public class Puerta {
          //Insercion valor intermedio
         Combinacion.insertar(vector[mit]);
         if (izq<der && mit != 0)
-        {
-        	
-        	
+        { 	        	
          //Copia subvector derecho y llamada recursiva
          configurarCombinacion(vector, mit+1, der);
          
@@ -152,46 +151,6 @@ public class Puerta {
         }
        
     }
-	
-    /**
-   	 * Coge los midiclorianos de un personaje y los va probando en la puerta
-   	 * Los que ya han sido probados son introducidos en el arbol de probados
-   	 * Si se intentan probar dos midiclorianos iguales, salta una alarma
-   	 * Si coincide un midicloriano probado con uno de la cerradura de la puerta, este es eliminado de la misma
-   	 * Se comprueba la condicion de apertura de la puerta, y si se cumple se abre y para el bucle
-   	 * 
-   	 * @param listaMidi Lista de midiclorianos
-   	 * 
-   	 */
-	public void probarMidiclorianos (LinkedList<Midi> listaMidi){  
-		
-		Midi aux;
-			
-		for (int i = 0; i < listaMidi.size()&& estado == false; i++){
-			
-			aux = listaMidi.remove(i);
-			if (Probados.existe(aux) == true)
-			{
-			 System.out.println("ALARMA, TRAIDORES DEL IMPERIO DETECTADOS");
-			}
-			else
-			{
-			 Probados.insertar(aux);
-			}
-			
-			if (Combinacion.existe(aux) == true)
-			{
-			 Combinacion.eliminar(aux);
-			}
-		
-			if (Combinacion.altura() <= profundidad && (Combinacion.numHojas() <= (Combinacion.numNodos()-Combinacion.numHojas()) ) )
-			{
-			 estado = true;
-			 System.out.println("THE GATES ARE OPEN");
-			}	
-		 }
-			
-	}
 	
 	/**
    	 * Metodo para probar un unico midicloriano en la cerradura
@@ -234,6 +193,7 @@ public class Puerta {
    	 * 
    	 */
 	public abb<Midi> getProbados() {
+		
 		return Probados;
 	}
 	
@@ -244,6 +204,7 @@ public class Puerta {
    	 * 
    	 */
 	public void setProbados(abb<Midi> probados) {
+		
 		Probados = probados;
 	}
 	
@@ -254,6 +215,7 @@ public class Puerta {
    	 * 
    	 */
 	public abb<Midi> getCombinacion() {
+		
 		return Combinacion;
 	}
 	
@@ -264,6 +226,7 @@ public class Puerta {
    	 * 
    	 */
 	public void setCombinacion(abb<Midi> combinacion) {
+		
 		Combinacion = combinacion;
 	}
 	
@@ -274,6 +237,7 @@ public class Puerta {
    	 * 
    	 */
 	public boolean isEstado() {
+		
 		return estado;
 	}
 	
@@ -284,6 +248,7 @@ public class Puerta {
    	 * 
    	 */
 	public void setEstado(boolean estado) {
+		
 		this.estado = estado;
 	}
 	
@@ -294,6 +259,7 @@ public class Puerta {
    	 * 
    	 */
 	public int getProfundidad() {
+		
 		return profundidad;
 	}
 	
@@ -304,6 +270,7 @@ public class Puerta {
    	 * 
    	 */
 	public void setProfundidad(int profundidad) {
+		
 		this.profundidad = profundidad;
 	}
 	
@@ -314,6 +281,7 @@ public class Puerta {
    	 * 
    	 */
 	public Midi[] getVectorCfg() {
+		
 		return vectorCfg;
 	}
 	
@@ -324,6 +292,7 @@ public class Puerta {
    	 * 
    	 */
 	public void setVectorCfg(Midi[] vectorCfg) {
+		
 		this.vectorCfg = vectorCfg;
 	}
 	

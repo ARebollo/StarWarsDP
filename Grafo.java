@@ -1,6 +1,10 @@
 package DEV;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
 * Declaracion de la clase grafo
@@ -479,7 +483,7 @@ public class Grafo {
        * @return Devuelve el camino en forma de lista de enteros
        * 
        */
-       protected List<Integer> encontrarCaminoList(int i, int x, int k, List<Integer> Camino){
+       public List<Integer> encontrarCaminoList(int i, int x, int k, List<Integer> Camino){
     	 
     	 if (Camino.isEmpty() == true)
     	 {
@@ -517,7 +521,7 @@ public class Grafo {
       * @return El camino seguido en forma de Lista de enteros
       * 
       */
-      protected List<Integer> manoDerecha (int i, int j, int ancho){
+      public List<Integer> manoDerecha (int i, int j, int ancho){
           int anterior = i;
           boolean fin = false;
           List<Integer> camino = new LinkedList<Integer>();

@@ -1,6 +1,8 @@
 package DEV;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * Declaracion de la clase Imperial
@@ -10,7 +12,9 @@ import java.util.*;
  *         <b> Curso 15/16 </b>
  */
 public class Imperial extends Personaje {
-
+	
+	private Queue<dir> caminoI;
+	
 	/**
 	 * Constructor parametrizado de la clase Imperial
 	 * 
@@ -27,7 +31,7 @@ public class Imperial extends Personaje {
 	public Imperial(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal) {
 
 		super(nombre, marcaId, turno, idEstacion, gal);
-		setTipoPj("Imperial");
+		
 		System.out.println("Personaje " + getNombrePersonaje() + " creado.");
 
 		for (int i = 1; i <= 29; i = i + 2) {
@@ -41,6 +45,7 @@ public class Imperial extends Personaje {
 		
 		Grafo grafoAux = gal.getGrafoGal();
 		
+		caminoI = new LinkedList<dir>();	// Para guardar una copia del camino del imperial (para usarlo en el reseteo)
 		List<Integer> listaAux = new LinkedList<Integer>();
 		
 		
@@ -53,6 +58,7 @@ public class Imperial extends Personaje {
 			
 			dirSig = listaAux.remove(0);
 			aniadirCamino(interpretarCamino(dirAnt,dirSig));
+			caminoI.add(interpretarCamino(dirAnt,dirSig));
 			dirAnt = dirSig;
 		}
 		
@@ -63,6 +69,7 @@ public class Imperial extends Personaje {
 			
 			dirSig = listaAux.remove(0);
 			aniadirCamino(interpretarCamino(dirAnt,dirSig));
+			caminoI.add(interpretarCamino(dirAnt,dirSig));
 			dirAnt = dirSig;
 		}
 		
@@ -73,6 +80,7 @@ public class Imperial extends Personaje {
 			
 			dirSig = listaAux.remove(0);
 			aniadirCamino(interpretarCamino(dirAnt,dirSig));
+			caminoI.add(interpretarCamino(dirAnt,dirSig));
 			dirAnt = dirSig;
 		}
 		
@@ -83,23 +91,33 @@ public class Imperial extends Personaje {
 			
 			dirSig = listaAux.remove(0);
 			aniadirCamino(interpretarCamino(dirAnt,dirSig));
+			caminoI.add(interpretarCamino(dirAnt,dirSig));
 			dirAnt = dirSig;
 		}
+		
 	}
 	
 	@Override
-	protected void tocarPuerta(Puerta puertaGal) {
+	public void tocarPuerta(Puerta puertaGal) {
 		
 		puertaGal.cerrarPuerta();
+		
+		if (!tieneCamino()){
+			setCamino(caminoI); 	// Resetear camino
+		}
 		
 	}
 
 	@Override
-	protected void tocarMidi(Estacion estacion) {
+	public void tocarMidi(Estacion estacion) {
 		
 		if (getIdEstacion() % 2 == 0 && tieneMidis())
 		{
 		 getPilaMidi().remove();
+		}
+		
+		if (!tieneCamino()){
+			setCamino(caminoI);		// Resetear camino
 		}
 	}
 	

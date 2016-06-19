@@ -24,7 +24,7 @@ public class FamiliaReal extends Personaje{
         public FamiliaReal(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal){
         	
         	super(nombre, marcaId, turno, idEstacion, gal); 
-        	setTipoPj("FamiliaReal");
+        	
             System.out.println("Personaje " + getNombrePersonaje() +" creado.");
         }
 
@@ -49,7 +49,7 @@ public class FamiliaReal extends Personaje{
 
 
 	@Override
-	protected void tocarPuerta(Puerta puertaGal) {
+	public void tocarPuerta(Puerta puertaGal) {
 		if (tieneMidis())
 		{
 			puertaGal.probarMidicloriano(sacarMidi());	
@@ -57,7 +57,7 @@ public class FamiliaReal extends Personaje{
 	}
 
 	@Override
-	protected void tocarMidi(Estacion estacion) {
+	public void tocarMidi(Estacion estacion) {
 		
 		if (estacion.hayMidis())
 		{

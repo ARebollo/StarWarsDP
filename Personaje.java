@@ -1,6 +1,8 @@
 package DEV;
  
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
 * Declaracion de la clase Personaje
@@ -13,7 +15,6 @@ public abstract class Personaje {
        
         enum dir {N, S, E, O};
        
-        private String tipoPj;
         private String nombrePersonaje;
         private int idEstacion;
         private char marcaId;
@@ -29,7 +30,6 @@ public abstract class Personaje {
        	*/
         public Personaje(){
         	
-                this.tipoPj = "";
                 this.nombrePersonaje = "";
                 this.marcaId = ' ';
                 this.idEstacion = -1;
@@ -51,7 +51,6 @@ public abstract class Personaje {
         */
         public Personaje(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal){
         	
-                this.tipoPj = "";
                 this.nombrePersonaje = nombre;
                 this.marcaId = marcaId;
                 this.idEstacion = idEstacion;
@@ -66,6 +65,11 @@ public abstract class Personaje {
         public void aniadirCamino(dir Dir){
         	
         	camino.add(Dir);	
+        }
+        
+        public boolean tieneCamino(){
+        	
+        	return !camino.isEmpty();
         }
         
         /**
@@ -107,26 +111,6 @@ public abstract class Personaje {
 		 */
 		public void setHaMovido(boolean haMovido) {
 			this.haMovido = haMovido;
-		}
-		
-		/**
-		 * Obtiene el atributo tipoPj de la clase Personaje
-		 * 
-		 * @return String con el tipo de Personaje
-		 * 
-		 */	
-		public String getTipoPj() {
-			return tipoPj;
-		}
-		
-		/**
-		 * Cambia el valor del atributo tipoPj de la clase Personaje
-		 * 
-		 * @param tipoPj Nuevo valor
-		 * 
-		 */
-		public void setTipoPj(String tipoPj) {
-			this.tipoPj = tipoPj;
 		}
 		
 		/**
@@ -246,7 +230,7 @@ public abstract class Personaje {
 				Midis = Midis + " " + it.next().toString();
 			}
 
-		  return "(" + tipoPj + ":" + marcaId + ":" + idEstacion + ":" + turnoActual + ":" + Midis + ")";
+		  return "(" + getClass().getSimpleName() + ":" + marcaId + ":" + idEstacion + ":" + turnoActual + ":" + Midis + ")";
 		}
 
 		public Queue<dir> getCamino() {
@@ -287,7 +271,7 @@ public abstract class Personaje {
 		public abstract void hallarCamino(Galaxia gal);
 		
 		//Convierte un movimiento de una casilla a otra en un Dir
-		protected dir interpretarCamino(int origen, int destino){
+		public dir interpretarCamino(int origen, int destino){
 			if (origen < destino && origen != destino - 1)
 				return dir.S;
 			if (origen == destino - 1)
@@ -330,7 +314,7 @@ public abstract class Personaje {
 			
 			if (gal.getId_salida() == idEstacion)
 			{
-				tocarPuerta(gal.getPuertaGal());	
+				tocarPuerta(gal.getPuertaGal());
 			 	if (camino.peek() != null)
 			 	{
 			 		gal.buscarEstacion(dirACamino(camino.peek(), gal.getAncho())).aniadirPj(this);  // Obtiene el camino del pj, busca la estacion con esa id y luego añade el personaje
@@ -348,8 +332,8 @@ public abstract class Personaje {
 		}
 		
 		//Realiza la accion apropiada para cada pj, es llamado por mover
-		protected abstract void tocarPuerta(Puerta puertaGal);
+		public abstract void tocarPuerta(Puerta puertaGal);
 		
-		protected abstract void tocarMidi(Estacion estacion);
+		public abstract void tocarMidi(Estacion estacion);
  
 }

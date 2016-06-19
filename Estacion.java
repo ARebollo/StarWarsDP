@@ -1,6 +1,8 @@
 package DEV;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
 * Declaracion de la clase Estacion
@@ -9,7 +11,7 @@ import java.util.*;
 *   <b> Asignatura Desarrollo de Programas</b><br>
 *   <b> Curso 15/16 </b>
 */
-public class Estacion implements Comparable<Estacion> {
+public class Estacion{
 	
 	private int id;
 	private int frecuencia;
@@ -133,7 +135,7 @@ public class Estacion implements Comparable<Estacion> {
 		colaPers.add(pj);
 	}
 	
-	public Personaje sacarPJ(){
+	public Personaje mirarPJ(){
 		return colaPers.get(0);
 	}
 	
@@ -160,6 +162,7 @@ public class Estacion implements Comparable<Estacion> {
    	 * 
    	 */
 	public String mostrarListaStr(){
+		
 		String a = "";
 		Iterator<Midi> it = listaMidiEst.iterator();
 		
@@ -172,6 +175,7 @@ public class Estacion implements Comparable<Estacion> {
 	}
 	
 	public void mostrarPersonajes(){
+		
 		Iterator<Personaje> it = colaPers.iterator();
 		
 		while (it.hasNext() == true){
@@ -181,16 +185,19 @@ public class Estacion implements Comparable<Estacion> {
 		}
 	}
 	
-	public void mostrarImp(){
+	public void mostrarImperial(){
+		
 		Iterator<Personaje> it = colaPers.iterator();
 		Personaje persAux;
+		
 		while (it.hasNext() == true){
-			persAux = it.next();
-			if (persAux.getClass().getName() == "Imperial"){ //TODO Seguro que es así?
-				System.out.print(it.next().toString() + " ");
-			}
 			
+			persAux = it.next();
 
+			if (persAux.getClass().getSimpleName().contains("Imperial") ){
+					
+				System.out.println(persAux.toString() + " ");
+			}
 		}
 	}
 	
@@ -317,37 +324,19 @@ public class Estacion implements Comparable<Estacion> {
 		return "Estacion [id=" + id + ", frecuencia=" + frecuencia + "]";
 	}
 	
-	/**
-   	 * Compara el valor de frecuencia entre dos Estaciones		// TODO borrar? no se usa pa na
-   	 * 
-   	 * @param eComp Objeto de clase Estacion
-   	 * 
-   	 * @return -1 si la id de la clase es menor <br> 0 si la id de la clase es la misma <br> 1 si la id de la clase es mayor
-   	 * 
-   	 */
-	@Override
-	public int compareTo(Estacion eComp){
-		if (this.id < eComp.getId())
-			return -1;
-		if (this.id == eComp.getId())
-			return 0;
-		else
-			return 1;
-	}
-
-	protected List<Midi> getListaMidiEst() {
+	public List<Midi> getListaMidiEst() {
 		return listaMidiEst;
 	}
 
-	protected void setListaMidiEst(List<Midi> listaMidiEst) {
+	public void setListaMidiEst(List<Midi> listaMidiEst) {
 		this.listaMidiEst = listaMidiEst;
 	}
 
-	protected List<Personaje> getColaPers() {
+	public List<Personaje> getColaPers() {
 		return colaPers;
 	}
 
-	protected void setColaPers(List<Personaje> colaPers) {
+	public void setColaPers(List<Personaje> colaPers) {
 		this.colaPers = colaPers;
 	}
 

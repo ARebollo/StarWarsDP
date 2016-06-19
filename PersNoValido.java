@@ -7,8 +7,9 @@ package DEV;
 *   <b> Asignatura Desarrollo de Programas</b><br>
 *   <b> Curso 15/16 </b>
 */
-public class PersNoValido extends Exception {
 
+@SuppressWarnings("serial")
+public class PersNoValido extends Exception {
 
 	public PersNoValido() {
 		

@@ -10,6 +10,7 @@ import java.util.*;
 *   <b> Asignatura Desarrollo de Programas</b><br>
 *   <b> Curso 15/16 </b>
 */
+/*
 public class PruebasGrafo {
 
 		public static void ejecutarPruebas(){
@@ -82,3 +83,4 @@ public class PruebasGrafo {
 	}
 
 }
+*/
