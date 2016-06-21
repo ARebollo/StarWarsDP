@@ -24,7 +24,7 @@ public class Contrabandista extends Personaje {
         public Contrabandista(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal){
         	
         	super(nombre, marcaId, turno, idEstacion, gal);
-            setTipoPj("Contrabandista");
+        	
             System.out.println("Personaje " + getNombrePersonaje() +" creado.");
         }
 
@@ -49,16 +49,15 @@ public class Contrabandista extends Personaje {
 	}
 
 	@Override
-	protected void tocarPuerta(Puerta puertaGal) {
+	public void tocarPuerta(Puerta puertaGal) {
 		if (tieneMidis())
-		{
-		
-			puertaGal.probarMidicloriano(sacarMidi());	
+		{	
+		 puertaGal.probarMidicloriano(sacarMidi());	
 		}
 	}
 	
 	@Override
-	protected void tocarMidi(Estacion estacion) {
+	public void tocarMidi(Estacion estacion) {
 		
 		if (estacion.hayMidis())
 		{

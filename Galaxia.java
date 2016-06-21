@@ -1,7 +1,17 @@
 package DEV;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * Declaracion de la clase Galaxia
@@ -172,10 +182,8 @@ public class Galaxia {
 		int numCampos = 0; // Utilizado para la funcion trocearLineaInicial
 		@SuppressWarnings("unused")
 		char x; // Utilizado para extraer un char
-		boolean galCreada = false; // Utilizado para evitar crear 2 galaxias en
-									// la misma ejecucion
-		Personaje persAux; // Utilizado para introducir el camino a los
-							// personajes
+		boolean galCreada = false; // Utilizado para evitar crear 2 galaxias en la misma ejecucion
+		Personaje persAux; // Utilizado para introducir el camino a los personajes
 
 		if (flujo.ready() == false) {
 			System.out.println("Problemas con el buffer (flujo)...");
@@ -183,7 +191,7 @@ public class Galaxia {
 			while (linea != null) {
 				if (linea.contains("--") == false) // Solo tomar en cuenta lineas sin comentarios
 				{
-					//Metemos la linea en vCampos
+					// Metemos la linea en vCampos
 					vCampos.clear();
 					numCampos = trocearLineaInicial(linea, vCampos);
 				}
@@ -191,21 +199,20 @@ public class Galaxia {
 				linea = flujo.readLine(); // Avanzar en el fichero
 
 				if (vCampos.isEmpty() == false) {
-					switch (vCampos.get(0)) { //Miramos de que tipo es el campo
+					switch (vCampos.get(0)) { // Miramos de que tipo es el campo
 					case ("GALAXIA"):
 						try {
-							//Comprobamos que los parámetros sean válidos (ancho,alto mayores que 0, salida dentro de la galaxia)
+							// Comprobamos que los parámetros sean válidos (ancho,alto mayores que 0, salida dentro de la galaxia)
 							if (Integer.parseInt(vCampos.get(1)) <= 0 
 									|| Integer.parseInt(vCampos.get(2)) <= 0
 									|| Integer.parseInt(vCampos.get(3)) < 0
-									|| Integer.parseInt(vCampos.get(3)) > (Integer.parseInt(vCampos.get(1))
-											* Integer.parseInt(vCampos.get(2))))
+									|| Integer.parseInt(vCampos.get(3)) > (Integer.parseInt(vCampos.get(1)) * Integer.parseInt(vCampos.get(2))))
 								throw new ConfigNoValida();
 							
 							if (galCreada == false) {
 								
 								mostrarDatosInicial(vCampos);
-								//Obtenemos alto, ancho y salida
+								// Obtenemos alto, ancho y salida
 								this.alto = Integer.parseInt(vCampos.get(1));
 								this.ancho = Integer.parseInt(vCampos.get(2));
 								this.id_salida = Integer.parseInt(vCampos.get(3));
@@ -215,12 +222,12 @@ public class Galaxia {
 								for (int i = 1; i < 30; i = i + 2)
 									listCfg.add(new Midi(i));
 
-								//Configuramos la puerta
+								// Configuramos la puerta
 								puertaGal = new Puerta();
 								puertaGal.setProfundidad(Integer.parseInt(vCampos.get(4)));
 								puertaGal.setCombinacionList(listCfg);
 
-								//Creamos las estaciones
+								// Creamos las estaciones
 								listaEstaciones = new Estacion[alto][ancho];
 								listaMidiGal = new LinkedList<Midi>();
 
@@ -232,13 +239,15 @@ public class Galaxia {
 
 								buscarEstacion(id_salida).setPuertaSalida(true);
 
-								//Creamos el grafo
+								// Creamos el grafo
 								grafoGal = new Grafo(alto, ancho, id_salida);
-								grafoGal.procesarParedes(ancho, 12345); //Semilla
+								grafoGal.procesarParedes(ancho, 12345); // Semilla 
 
-								//Impedimos que se cree más de una galaxia
+								// Impedimos que se cree más de una galaxia
 								galCreada = true;
-								mostrarMapa();
+								
+								// Dibujamos el mapa de la galaxia al inicio de la simulacion
+								datosAFichero(0, true);
 							}
 
 						} catch (ConfigNoValida e) {
@@ -253,8 +262,6 @@ public class Galaxia {
 								Integer.parseInt(vCampos.get(3)), 0, this);
 						
 						listaEstaciones[0][0].aniadirPj(persAux);
-						System.out.println(persAux.mostrarCamino());
-						System.out.println(persAux);
 						break;
 
 					case ("JEDI"):
@@ -263,8 +270,6 @@ public class Galaxia {
 								Integer.parseInt(vCampos.get(3)), 0,this);
 						
 						listaEstaciones[0][0].aniadirPj(persAux);
-						System.out.println(persAux.mostrarCamino());
-						System.out.println(persAux);
 						break;
 
 					case ("IMPERIAL"):
@@ -273,8 +278,6 @@ public class Galaxia {
 								Integer.parseInt(vCampos.get(3)), (alto * ancho) - 1,this);
 						
 						listaEstaciones[alto - 1][ancho - 1].aniadirPj(persAux);
-						System.out.println(persAux.mostrarCamino());
-						System.out.println(persAux);
 						break;
 
 					case ("CONTRABANDISTA"):
@@ -283,8 +286,6 @@ public class Galaxia {
 								Integer.parseInt(vCampos.get(3)), (alto * ancho) - ancho,this);
 						
 						listaEstaciones[alto - 1][0].aniadirPj(persAux);
-						System.out.println(persAux.mostrarCamino());
-						System.out.println(persAux);
 						break;
 					default:
 						break;
@@ -425,7 +426,7 @@ public class Galaxia {
 					} 
 					else 
 					{
-						System.out.print(listaEstaciones[i][j].sacarPJ().getMarcaId());
+						System.out.print(listaEstaciones[i][j].mirarPJ().getMarcaId());
 					}
 				} 
 				else
@@ -513,7 +514,7 @@ public class Galaxia {
 					} 
 					else 
 					{
-						out.print(listaEstaciones[i][j].sacarPJ().getMarcaId());
+						out.print(listaEstaciones[i][j].mirarPJ().getMarcaId());
 					}
 				} 
 				else
@@ -630,6 +631,8 @@ public class Galaxia {
 				listaEstaciones[i][j].mostrarPersonajes();
 			}
 		}
+		
+		System.out.println("");
 		System.out.println("-------------------------------------------");
 	
 		// ----------------------
@@ -650,12 +653,12 @@ public class Galaxia {
 	
 				for (int j = 0; j < ancho; j++) {
 	
-					listaEstaciones[i][j].mostrarImp();
+					listaEstaciones[i][j].mostrarImperial();
 					}
 				}
 			}
 		
-	
+		System.out.println("");
 		System.out.println("-------------------------------------------");
 	}
 
@@ -678,10 +681,21 @@ public class Galaxia {
 		}
 	
 		out.print("La combinación es:");
-		out.println(puertaGal.mostrarVectorCfgString());
+		out.print(puertaGal.mostrarVectorCfgString());
 		out.println(" y su profundidad es " + puertaGal.getProfundidad());
 		out.print("Se han probado los midiclorianos: " + puertaGal.getProbados().arbolAString());
 		out.println();
+		
+		// ----------------------
+		// Mostrando tablero final
+		// ----------------------
+		
+		out.println("El tablero al finalizar la simulación es el siguiente:");
+				
+		try {
+			mapaAFichero(out);
+		} catch (IOException e) {}
+				
 		out.println();
 	
 		// ----------------------
@@ -755,7 +769,7 @@ public class Galaxia {
 	
 						persAux = it.next();
 						
-						if (persAux.getTipoPj() == "Imperial")	//TODO estas cosas me parece k no
+						if (persAux.getClass().getSimpleName().contains("Imperial"))
 						{
 							out.println(persAux.toString());
 						}
@@ -841,16 +855,19 @@ public class Galaxia {
 	 * @throws IOException
 	 * 
 	 */
-	private void datosAFichero(int turno) throws IOException {
+	private void datosAFichero(int turno, boolean mapaInicial) throws IOException {
 
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("registro.log", true))); // Iniciar flujo (true para que el archivo añada datos al final)
 																									
 		Personaje persAux; // Para extraer datos de los personajes
-		// TODO not sure
+		
+		if (mapaInicial == false)
+		{
 
 		if (turno == 0) // Imprimir todos los caminos de los personajes al
 						// comienzo de la simulacion
 		{
+
 			Iterator<Personaje> it = buscarEstacion(0).getColaPers().iterator(); // Para los JEDI y FR
 
 			while (it.hasNext() == true) {
@@ -950,6 +967,14 @@ public class Galaxia {
 			finAFichero(out);
 			out.close(); // Cerrar flujo
 		}
+		
+	}
+	else
+	{
+	 mapaAFichero(out);
+	 out.close();
+	}
+	
 	}
 
 	private boolean activarEstaciones() {
@@ -981,21 +1006,23 @@ public class Galaxia {
 		
 		boolean fin = false;
 		
-		System.out.println("------------asdsdasdasda----------");
-		listaEstaciones[9][4].mostrarPersonajes();
-		
-		for (int turno = 1; turno < 51 && fin == false; turno++){
+		for (int turno = 0; turno < 51 && fin == false; turno++){
+			
+			try {
+				datosAFichero(turno, false); 
+			} catch (IOException e) {}
+			
+			infoTurno(turno);
 			
 			fin = activarEstaciones();
 			
 			if (fin == false)
 				reiniciarTurno();
-			
-			infoTurno(turno);
-			
-			try {
-				datosAFichero(turno); 
-			} catch (IOException e) {}
+			else
+				try {
+					datosAFichero(turno, false);
+				} catch (IOException e) {}
+	
 		}
 		mostrarFin();
 	}

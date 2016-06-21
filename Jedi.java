@@ -1,6 +1,8 @@
 package DEV;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
 * Declaracion de la clase Jedi
 * @author
@@ -22,7 +24,7 @@ public class Jedi extends Personaje{
         public Jedi(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal){
         	
             super(nombre, marcaId, turno, idEstacion, gal);
-            setTipoPj("Jedi");
+            
             System.out.println("Personaje " + getNombrePersonaje() +" creado.");
         }
 
@@ -46,7 +48,7 @@ public class Jedi extends Personaje{
 	}
 
 	@Override
-	protected void tocarPuerta(Puerta puertaGal) {
+	public void tocarPuerta(Puerta puertaGal) {
 		if (tieneMidis())
 		{
 			puertaGal.probarMidicloriano(sacarMidi());	
@@ -54,7 +56,7 @@ public class Jedi extends Personaje{
 	}
 	
 	@Override
-	protected void tocarMidi(Estacion estacion) {
+	public void tocarMidi(Estacion estacion) {
 		
 		if (estacion.hayMidis())
 		{

@@ -1,6 +1,7 @@
 package DEV;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
 * Declaracion de la clase abb
@@ -11,6 +12,7 @@ import java.util.*;
 */
 public class abb <T extends Comparable<T>> {
 	 
+	@SuppressWarnings("hiding")
 	private class nodoArbol<T extends Comparable<T>> {
 
         private abb<T> hd;
@@ -224,7 +226,8 @@ public class abb <T extends Comparable<T>> {
    	 */
     public boolean existe(T dato){
 
-    if (raiz != null && raiz.dato != null) {
+    if (raiz != null && raiz.dato != null)
+    {
             if (dato.compareTo(raiz.dato) == 0) 
             {
              return true;
