@@ -19,6 +19,7 @@ public class Jedi extends Personaje{
 	 	* @param marcaId Marca del personaje
 	 	* @param turno Turno en el que comienza a mover el personaje
 	 	* @param idEstacion Estacion en la que se encuentra el personaje
+	 	* @param gal Nuestra Galaxia
 	 	* 
 	 	*/
         public Jedi(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal){
@@ -29,6 +30,12 @@ public class Jedi extends Personaje{
         }
 
 	@Override
+	/**
+   	 * Metodo para hallar y almacenar el camino que el Personaje ha de seguir en la Galaxia
+   	 * 
+   	 * @param gal Nuestra Galaxia
+   	 * 
+   	 */
 	public void hallarCamino(Galaxia gal) {
 		
 		List<Integer> listaAux = new LinkedList<Integer>();
@@ -48,14 +55,26 @@ public class Jedi extends Personaje{
 	}
 
 	@Override
+	/**
+   	 * Metodo para probar uno de los Midi recogidos por el Personaje en la Puerta de salida
+   	 * 
+   	 * @param puertaGal Objeto de la clase Puerta
+   	 * 
+   	 */
 	public void tocarPuerta(Puerta puertaGal) {
 		if (tieneMidis())
 		{
-			puertaGal.probarMidicloriano(sacarMidi());	
+		 puertaGal.probarMidicloriano(sacarMidi());	
 		}
 	}
 	
 	@Override
+	/**
+   	 * Metodo para recoger uno de los Midi de la Estacion en la que se encuentra el Personaje
+   	 * 
+   	 * @param estacion Objeto de la clase Estacion
+   	 * 
+   	 */
 	public void tocarMidi(Estacion estacion) {
 		
 		if (estacion.hayMidis())

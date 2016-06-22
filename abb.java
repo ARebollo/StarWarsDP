@@ -256,7 +256,7 @@ public class abb <T extends Comparable<T>> {
     /**
    	 * Calcula la profundidad del arbol
    	 *
-   	 * @return Profundidad del arbol
+   	 * @return Entero con la profundidad del arbol
    	 * 
    	 */
     public int altura() {
@@ -316,7 +316,7 @@ public class abb <T extends Comparable<T>> {
     /**
      * Devuelve los contenidos del arbol en un string
      * 
-     * @return a String que contiene el arbol, con espacios entre cada valor.
+     * @return a Cadena que contiene los datos del arbol, con espacios entre cada valor.
      * 
      */
     public String arbolAString() {
@@ -408,7 +408,7 @@ public class abb <T extends Comparable<T>> {
     /**
    	 * Calcula el numero de hojas totales del arbol
    	 * 
-   	 * @return Numero de hojas del arbol
+   	 * @return Entero con el numero de hojas del arbol
    	 * 
    	 */
     public int numHojas(){
@@ -438,7 +438,7 @@ public class abb <T extends Comparable<T>> {
     /**
    	 * Calcula el numero de nodos que tiene el arbol
    	 * 
-   	 * @return Numero de nodos del arbol
+   	 * @return Entero con el numero de nodos del arbol
    	 * 
    	 */
     public int numNodos(){

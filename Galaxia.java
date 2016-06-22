@@ -35,8 +35,9 @@ public class Galaxia {
 	 * Constructor default de la clase Galaxia <br>
 	 * Carga los datos desde el fichero "test"
 	 * 
-	 * @throws FileNotFoundException,
-	 *             IOException, ConfigNoValida
+	 * @param _nombreFichero Nombre del fichero de configuracion
+	 * 
+	 * @throws FileNotFoundException, IOException, ConfigNoValida
 	 * 
 	 */
 	Galaxia(String _nombreFichero) throws IOException, FileNotFoundException, ConfigNoValida {
@@ -55,12 +56,9 @@ public class Galaxia {
 	/**
 	 * Constructor parametrizado de la clase Galaxia
 	 * 
-	 * @param alto
-	 *            Numero de columnas horizontales en la matriz galaxia
-	 * @param ancho
-	 *            Numero de columnas verticales en la matriz galaxia
-	 * @param id_salida
-	 *            Estacion en la que se encuentra la puerta de salida
+	 * @param alto Numero de columnas horizontales en la matriz galaxia
+	 * @param ancho Numero de columnas verticales en la matriz galaxia
+	 * @param id_salida Estacion en la que se encuentra la puerta de salida
 	 * 
 	 */
 	Galaxia(int alto, int ancho, int id_salida) {
@@ -76,10 +74,11 @@ public class Galaxia {
 
 			for (int j = 0; j < ancho; j++) {
 
-				listaEstaciones[i][j] = new Estacion(contador, 0);
+				listaEstaciones[i][j] = new Estacion(contador);
 				contador++;
 
-				if (contador == id_salida) {
+				if (contador == id_salida) 
+				{
 					listaEstaciones[i][j].setPuertaSalida(true);
 				}
 
@@ -92,8 +91,7 @@ public class Galaxia {
 	/**
 	 * Metodo para buscar una estacion en la galaxia
 	 * 
-	 * @param id
-	 *            Id de la estacion a buscar
+	 * @param id Id de la estacion a buscar
 	 * 
 	 * @return Objeto de la clase Estacion
 	 * 
@@ -105,8 +103,7 @@ public class Galaxia {
 	}
 
 	/**
-	 * Metodo para generar los midiclorianos que posteriormente se repartiran
-	 * entre las estaciones de la galaxia
+	 * Metodo para generar los midiclorianos que posteriormente se repartiran entre las estaciones de la galaxia
 	 * 
 	 */
 	private void almacenarMidi() {
@@ -116,7 +113,8 @@ public class Galaxia {
 
 			listaMidiGal.add(new Midi(i));
 
-			if (i % 2 == 1) {
+			if (i % 2 == 1) 
+			{
 				listaMidiGal.add(new Midi(i)); // Agregar uno extra si es impar
 			}
 
@@ -125,8 +123,7 @@ public class Galaxia {
 	}
 
 	/**
-	 * Metodo para repartir los midiclorianos que se encuentran en la lista de
-	 * la galaxia
+	 * Metodo para repartir los midiclorianos (siguiendo la ruta de los familia real) que se encuentran en la lista de la galaxia
 	 * 
 	 */
 	private void repartirMidi() {
@@ -138,8 +135,7 @@ public class Galaxia {
 		
 		Iterator<Integer> it = ruta.iterator();
 		
-		estAux = buscarEstacion(0); // El origen no esta en la ruta, asique lo
-									// aniadimos a mano
+		estAux = buscarEstacion(0); // El origen no esta en la ruta, asique lo aniadimos a mano
 
 		for (int x = 0; x < 5 && listaMidiGal.isEmpty() == false; x++) {
 
@@ -162,11 +158,11 @@ public class Galaxia {
 	}
 
 	/**
-	 * Metodo para procesar el fichero, cambiar los atributos de la galaxia y
-	 * generar los personajes correspondientes.
+	 * Metodo para procesar el fichero, cambiar los atributos de la galaxia y generar los personajes correspondientes
 	 * 
-	 * @throws FileNotFoundException,
-	 *             IOException, ConfigNoValida
+	 * @param _nombreFichero Nombre del fichero de configuracion
+	 * 
+	 * @throws FileNotFoundException, IOException, ConfigNoValida
 	 * 
 	 */
 	private void configurarDeFichero(String _nombreFichero) throws FileNotFoundException, IOException, ConfigNoValida {
@@ -185,7 +181,7 @@ public class Galaxia {
 		boolean galCreada = false; // Utilizado para evitar crear 2 galaxias en la misma ejecucion
 		Personaje persAux; // Utilizado para introducir el camino a los personajes
 
-		if (flujo.ready() == false) {
+		if (flujo.ready() == false){
 			System.out.println("Problemas con el buffer (flujo)...");
 		} else {
 			while (linea != null) {
@@ -198,7 +194,8 @@ public class Galaxia {
 
 				linea = flujo.readLine(); // Avanzar en el fichero
 
-				if (vCampos.isEmpty() == false) {
+				if (vCampos.isEmpty() == false) 
+				{
 					switch (vCampos.get(0)) { // Miramos de que tipo es el campo
 					case ("GALAXIA"):
 						try {
@@ -233,7 +230,7 @@ public class Galaxia {
 
 								for (int i = 0; i < alto; i++){
 									for (int j = 0; j < ancho; j++){
-										listaEstaciones[i][j] = new Estacion(j + ancho * i, 0);
+										listaEstaciones[i][j] = new Estacion(j + ancho * i);
 									}
 								}
 
@@ -241,12 +238,12 @@ public class Galaxia {
 
 								// Creamos el grafo
 								grafoGal = new Grafo(alto, ancho, id_salida);
-								grafoGal.procesarParedes(ancho, 12345); // Semilla 
+								grafoGal.procesarParedes(ancho, 12345); // TODO Semilla 
 
 								// Impedimos que se cree más de una galaxia
 								galCreada = true;
 								
-								// Dibujamos el mapa de la galaxia al inicio de la simulacion
+								// Dibujamos el mapa de la galaxia al inicio de la simulacion (en fichero de log)
 								datosAFichero(0, true);
 							}
 
@@ -304,11 +301,8 @@ public class Galaxia {
 	/**
 	 * Metodo para trocear cada linea y separarla por campos
 	 * 
-	 * @param S
-	 *            cadena con la linea completa leida
-	 * @param vCampos
-	 *            Array de String que contiene en cada posicion un campo
-	 *            distinto
+	 * @param S cadena con la linea completa leida
+	 * @param vCampos Array de String que contiene en cada posicion un campo distinto
 	 * 
 	 * @return numCampos Numero de campos encontrados
 	 * 
@@ -334,9 +328,7 @@ public class Galaxia {
 	/**
 	 * Metodo para mostrar los campos en los que se ha dividido una linea
 	 * 
-	 * @param vCampos
-	 *            Array de String que contiene en cada posicion un campo
-	 *            distinto
+	 * @param vCampos Array de String que contiene en cada posicion un campo distinto
 	 * 
 	 */
 	private void mostrarDatosInicial(List<String> vCampos) {
@@ -344,8 +336,7 @@ public class Galaxia {
 	}
 
 	/**
-	 * Metodo para mostrar la matriz de la galaxia (formada por la id de las
-	 * estaciones)
+	 * Metodo para mostrar la matriz de la galaxia (formada por la id de las estaciones)
 	 * 
 	 */
 	public void mostrarGalaxia() {
@@ -357,7 +348,7 @@ public class Galaxia {
 				System.out.print(listaEstaciones[i][j].getId() + " ");
 
 				if (listaEstaciones[i][j].getId() < 10) {
-					System.out.print(" "); // +bonito
+					System.out.print(" ");
 				}
 
 				if (j == ancho - 1) {
@@ -393,6 +384,10 @@ public class Galaxia {
 
 	}
 	
+	/**
+	 * Metodo para mostrar el mapa de la Galaxia junto con los personajes en cada Estacion
+	 * 
+	 */
 	private void mostrarMapa(){
 		
 		int y = 0;
@@ -481,6 +476,12 @@ public class Galaxia {
 		System.out.println();		
 	}
 	
+	/**
+	 * Metodo para guardar el mapa de la Galaxia junto con los personajes en cada Estacion en el archivo de registro
+	 * 
+	 * @param out Acceso al fichero en modo escritura
+	 * 
+	 */
 	private void mapaAFichero (PrintWriter out) throws IOException{
 		
 		int y = 0;
@@ -569,7 +570,11 @@ public class Galaxia {
 		out.println();
 	
 	}
-
+	
+	/**
+	 * Metodo para mostrar los resultados al finalizar la simulación
+	 * 
+	 */
 	private void mostrarFin() {
 		
 		System.out.println();
@@ -661,7 +666,13 @@ public class Galaxia {
 		System.out.println("");
 		System.out.println("-------------------------------------------");
 	}
-
+	
+	/**
+	 * Metodo para guardar los resultados al finalizar la simulacion en el archivo de registro
+	 * 
+	 * @param out Acceso al fichero en modo escritura
+	 * 
+	 */
 	private void finAFichero (PrintWriter out){
 		
 		Personaje persAux;
@@ -847,10 +858,10 @@ public class Galaxia {
 	
 
 	/**
-	 * Metodo para almacenar los datos de un turno en un fichero externo llamado "logDatos.txt"
+	 * Metodo para almacenar los datos de un turno en el archivo de registro
 	 * 
 	 * @param turno Numero del turno en el que se encuentra la simulacion
-	 * @param fin Booleano para indicar si ha terminado o no la simulacion
+	 * @param mapaInicial Booleano para indicar si solo hay que guardar el mapa de la Galaxia o la informacion completa del turno
 	 * 
 	 * @throws IOException
 	 * 
@@ -864,8 +875,7 @@ public class Galaxia {
 		if (mapaInicial == false)
 		{
 
-		if (turno == 0) // Imprimir todos los caminos de los personajes al
-						// comienzo de la simulacion
+		if (turno == 0) // Imprimir todos los caminos de los personajes al comienzo de la simulacion
 		{
 
 			Iterator<Personaje> it = buscarEstacion(0).getColaPers().iterator(); // Para los JEDI y FR
@@ -976,7 +986,13 @@ public class Galaxia {
 	}
 	
 	}
-
+	
+	/**
+	 * Metodo para indicar a todos los Personajes de la Galaxia que han de realizar su turno
+	 * 
+	 * @return True : si todos los Personajes han realizado su turno <br> False : si algun Personaje no ha realizado su turno
+	 * 
+	 */
 	private boolean activarEstaciones() {
 		
 		boolean fin = false;
@@ -991,6 +1007,10 @@ public class Galaxia {
 		return fin;
 	}
 	
+	/**
+	 * Metodo para indicar a todos los Personajes de la Galaxia que ha comenzado un nuevo turno y pueden moverse de nuevo
+	 * 
+	 */
 	private void reiniciarTurno(){
 		
 		for (int i = 0; i < alto;i++){
@@ -1002,6 +1022,10 @@ public class Galaxia {
 		}
 	}
 	
+	/**
+	 * Metodo para iniciar la simulacion
+	 * 
+	 */
 	private void simular() {
 		
 		boolean fin = false;
@@ -1026,64 +1050,153 @@ public class Galaxia {
 		}
 		mostrarFin();
 	}
-
+	
+	/**
+   	 * Obtiene el atributo grafoGal de la clase Galaxia
+   	 * 
+   	 * @return Objeto de la clase Grafo
+   	 * 
+   	 */
 	public Grafo getGrafoGal() {
 		return grafoGal;
 	}
-
+	
+	/**
+   	 * Cambia el grafoGal de la clase Galaxia
+   	 * 
+   	 * @param grafoGal Nuevo objeto de clase Grafo
+   	 * 
+   	 */
 	public void setGrafoGal(Grafo grafoGal) {
 		this.grafoGal = grafoGal;
 	}
-
+	
+	/**
+   	 * Obtiene el atributo alto de la clase Galaxia
+   	 * 
+   	 * @return Entero con la altura de la Galaxia
+   	 * 
+   	 */
 	public int getAlto() {
 		return alto;
 	}
-
+	
+	/**
+   	 * Cambia el valor del atributo alto de la clase Galaxia
+   	 * 
+   	 * @param alto Nuevo valor entero
+   	 * 
+   	 */
 	public void setAlto(int alto) {
 		this.alto = alto;
 	}
-
+	
+	/**
+   	 * Obtiene el atributo ancho de la clase Galaxia
+   	 * 
+   	 * @return Entero con la anchura de la Galaxia
+   	 * 
+   	 */
 	public int getAncho() {
 		return ancho;
 	}
-
+	
+	/**
+   	 * Cambia el valor del atributo ancho de la clase Galaxia
+   	 * 
+   	 * @param ancho Nuevo valor entero
+   	 * 
+   	 */
 	public void setAncho(int ancho) {
 		this.ancho = ancho;
 	}
-
+	
+	/**
+   	 * Obtiene el atributo id_salida de la clase Galaxia
+   	 * 
+   	 * @return Entero con la id de la Estacion que contiene la Puerta de salida de la Galaxia
+   	 * 
+   	 */
 	public int getId_salida() {
 		return id_salida;
 	}
-
+	
+	/**
+   	 * Cambia el valor del atributo id_salida de la clase Galaxia
+   	 * 
+   	 * @param id_salida Nuevo valor entero
+   	 * 
+   	 */
 	public void setId_salida(int id_salida) {
 		this.id_salida = id_salida;
 	}
-
+	
+	/**
+   	 * Obtiene el atributo puertaGal de la clase Galaxia
+   	 * 
+   	 * @return Objeto de la clase Puerta
+   	 * 
+   	 */
 	public Puerta getPuertaGal() {
 		return puertaGal;
 	}
-
+	
+	/**
+   	 * Cambia la puertaGal de la clase Galaxia
+   	 * 
+   	 * @param puertaGal Nuevo objeto de la clase Puerta
+   	 * 
+   	 */
 	public void setPuertaGal(Puerta puertaGal) {
 		this.puertaGal = puertaGal;
 	}
-
+	
+	/**
+   	 * Obtiene la matriz de las Estaciones que componen la Galaxia
+   	 * 
+   	 * @return Matriz de tipo Estacion que forma el tablero de la Galaxia
+   	 * 
+   	 */
 	public Estacion[][] getListaEstaciones() {
 		return listaEstaciones;
 	}
-
+	
+	/**
+   	 * Cambia la matriz de las Estaciones que componen la Galaxia
+   	 * 
+   	 * @param listaEstaciones Nueva matriz de tipo Estacion
+   	 * 
+   	 */
 	public void setListaEstaciones(Estacion[][] listaEstaciones) {
 		this.listaEstaciones = listaEstaciones;
 	}
 
+	/**
+   	 * Obtiene la cola de Midi de la clase Galaxia
+   	 * 
+   	 * @return Cola de tipo Midi que contiene los midiclorianos no repartidos de la Galaxia
+   	 * 
+   	 */
 	public Queue<Midi> getListaMidiGal() {
 		return listaMidiGal;
 	}
-
+	
+	/**
+   	 * Cambia la cola de Midi de la clase Galaxia
+   	 * 
+   	 * @param listaMidiGal Nueva cola de tipo Midi
+   	 * 
+   	 */
 	public void setListaMidiGal(Queue<Midi> listaMidiGal) {
 		this.listaMidiGal = listaMidiGal;
 	}
 	
-	//True si la puerta se ha abierto
+	/**
+   	 * Indica si la Puerta de la Galaxia esta abierta
+   	 * 
+   	 * @return True : si la Puerta esta abierta <br> False : si la Puerta esta cerrada
+   	 * 
+   	 */
 	public boolean finJuego(){
 		return puertaGal.isEstado();
 	}
