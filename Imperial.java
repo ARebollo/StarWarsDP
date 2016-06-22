@@ -18,14 +18,11 @@ public class Imperial extends Personaje {
 	/**
 	 * Constructor parametrizado de la clase Imperial
 	 * 
-	 * @param nombre
-	 *            Nombre del personaje
-	 * @param marcaId
-	 *            Marca del personaje
-	 * @param turno
-	 *            Turno en el que comienza a mover el personaje
-	 * @param idEstacion
-	 *            Estacion en la que se encuentra el personaje
+	 * @param nombre Nombre del personaje
+	 * @param marcaId Marca del personaje
+	 * @param turno Turno en el que comienza a mover el personaje
+	 * @param idEstacion Estacion en la que se encuentra el personaje
+	 * @param gal Nuestra Galaxia
 	 * 
 	 */
 	public Imperial(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal) {

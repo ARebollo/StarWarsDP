@@ -51,7 +51,7 @@ public class Puerta {
 	}
 	
 	/**
-   	 * Crea la combinacion de la puerta a traves de una List de Midi
+   	 * Crea la combinacion de la puerta a traves de una lista de Midi
    	 * 
    	 */
 	public void setCombinacionList(List<Midi> list){
@@ -94,6 +94,12 @@ public class Puerta {
 			
 	}
 	
+	/**
+   	 * Metodo para devolver el vector de configuracion que tiene la Puerta en forma de String
+   	 * 
+   	 * @return Cadena con el vector de configuracion de la Puerta
+   	 * 
+   	 */
 	public String mostrarVectorCfgString(){
 		
 		String a ="";
@@ -130,7 +136,7 @@ public class Puerta {
 	}
 
 	/**
-   	 * Crea la combinacion de la puerta a partir de un vector de Midiclorianos, siguiendo el algoritmo especificado en la entrega
+   	 * Crea la combinacion de la puerta a partir de un vector de Midiclorianos, siguiendo el algoritmo especificado en la entrega <br>
    	 * Para ello inserta el valor medio y se llama recursivamente primero para la mitad derecha del vector y posteriormente para la izquierda, usando un vector auxiliar como parametro de entrada
    	 * 
    	 * @param vector Vector de Midi
@@ -198,7 +204,7 @@ public class Puerta {
 	}
 	
 	/**
-   	 * Cambia el valor del arbol Probados de la clase Puerta
+   	 * Cambia el arbol Probados de la clase Puerta
    	 * 
    	 * @param probados Nuevo arbol de Midi
    	 * 
@@ -220,7 +226,7 @@ public class Puerta {
 	}
 	
 	/**
-   	 * Cambia el valor del arbol Combinacion de la clase Puerta
+   	 * Cambia el arbol Combinacion de la clase Puerta
    	 * 
    	 * @param combinacion Nuevo arbol de Midi
    	 * 
@@ -231,9 +237,9 @@ public class Puerta {
 	}
 	
 	/**
-   	 * Indica si la Puerta esta abierta o no
+   	 * Indica si la Puerta esta abierta o cerrada
    	 * 
-   	 * @return True si la Puerta esta abierta <br> False si la Puerta esta cerrada
+   	 * @return True : si la Puerta esta abierta <br> False : si la Puerta esta cerrada
    	 * 
    	 */
 	public boolean isEstado() {
@@ -255,7 +261,7 @@ public class Puerta {
 	/**
    	 * Obtiene el atributo Profundidad de la clase Puerta
    	 * 
-   	 * @return Profundidad de la Puerta
+   	 * @return Entero con la profundidad de la Puerta
    	 * 
    	 */
 	public int getProfundidad() {
@@ -266,7 +272,7 @@ public class Puerta {
 	/**
    	 * Cambia el valor del atributo Profundidad de la clase Puerta
    	 * 
-   	 * @param profundidad Nuevo valor
+   	 * @param profundidad Nuevo valor entero
    	 * 
    	 */
 	public void setProfundidad(int profundidad) {
@@ -275,7 +281,7 @@ public class Puerta {
 	}
 	
 	/**
-   	 * Obtiene el valor del vector VectorCfg de la clase Puerta
+   	 * Obtiene el vector de configuracion de la clase Puerta
    	 * 
    	 * @return Vector con los midiclorianos que se van a usar en la configuracion de la combinacion
    	 * 
@@ -286,7 +292,7 @@ public class Puerta {
 	}
 	
 	/**
-   	 * Cambia el valor del vector VectorCfg de la clase Puerta
+   	 * Cambia el vector de configuracion de la clase Puerta
    	 * 
    	 * @param vectorCfg Nuevo vector de Midi
    	 * 

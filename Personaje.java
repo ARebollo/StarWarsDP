@@ -47,6 +47,7 @@ public abstract class Personaje {
         * @param marcaId Marca del personaje
         * @param turno Turno en el que empieza a moverse el personaje
         * @param idEstacion Estacion en la que se encuentra el personaje
+        * @param gal Nuestra Galaxia
         * 
         */
         public Personaje(String nombre, char marcaId, int turno, int idEstacion, Galaxia gal){
@@ -62,36 +63,90 @@ public abstract class Personaje {
                 hallarCamino(gal);
         }
         
+        /**
+       	 * Metodo para aniadir un tipo dir a la cola del Personaje
+       	 * 
+       	 * @param Dir Objeto de tipo dir
+       	 * 
+       	 */
         public void aniadirCamino(dir Dir){
         	
         	camino.add(Dir);	
         }
         
-        public boolean tieneCamino(){
-        	
-        	return !camino.isEmpty();
-        }
-        
         /**
-         * Metodo para devolver el camino de un Personaje
-         * 
-         * @return String con el camino del personaje
-         * 
-         */
-        public String mostrarCamino(){
-        	
-        	Iterator<dir> it = camino.iterator();
-        	String aux ="";
-        	
-        	while (it.hasNext()){
-        		
-        		aux += it.next() + " ";
-        	}
-        	
-          return aux;
-        }
-        
-        // Getters & Setters
+		 * Indica si el Personaje tiene camino
+		 * 
+		 * @return True : si el Personaje tiene algun camino <br> False : si el Personaje no tiene ningun camino
+		 * 
+		 */
+		public boolean tieneCamino(){
+			
+			return !camino.isEmpty();
+		}
+
+		/**
+		 * Metodo para devolver el camino de un Personaje en forma de String
+		 * 
+		 * @return Cadena con el camino del personaje
+		 * 
+		 */
+		public String mostrarCamino(){
+			
+			Iterator<dir> it = camino.iterator();
+			String aux ="";
+			
+			while (it.hasNext()){
+				
+				aux += it.next() + " ";
+			}
+			
+		  return aux;
+		}
+		
+		/**
+       	 * Metodo para aniadir un Midi a la pila del Personaje
+       	 * 
+       	 * @param midi Objeto de la clase Midi
+       	 * 
+       	 */
+		public void aniadirMidi(Midi midi){
+			
+			pilaMidi.addFirst(midi);
+		}
+		
+		/**
+	   	 * Metodo para obtener y quitar el primer Midi de la pila del Personaje
+	   	 * 
+	   	 * @return Objeto de la clase Midi
+	   	 * 
+	   	 */
+		public Midi sacarMidi(){
+			
+			return pilaMidi.poll();
+		}
+		
+		/**
+	   	 * Indica si el Personaje tiene Midi
+	   	 * 
+	   	 * @return True : si el Personaje tiene algun Midi <br> False : si el Personaje no tiene ningun Midi
+	   	 * 
+	   	 */
+		public boolean tieneMidis(){
+			return !pilaMidi.isEmpty();
+		}
+		
+		/**
+	   	 * Obtiene el numero de Midi que se encuentran en la pila del Personaje
+	   	 * 
+	   	 * @return Entero con el numero de Midi que tiene el Personaje
+	   	 * 
+	   	 */
+		public int cuantosMidis(){
+			return pilaMidi.size();
+		}
+
+		// Getters & Setters
         
         /**
          * Indica si el Personaje ha realizado algun movimiento durante un turno de la simulacion
@@ -213,64 +268,60 @@ public abstract class Personaje {
 			this.turnoActual = turnoActual;
 		}
 		
-		// To
-
 		/**
-	   	 * Muestra la informacion de la clase Personaje
+	   	 * Obtiene la cola de caminos de la clase Personaje
+	   	 * 
+	   	 * @return Cola de tipo dir
 	   	 * 
 	   	 */
-		@Override
-		public String toString() {
-		
-			String Midis = "";
-			Iterator<Midi> it = pilaMidi.iterator();
-			
-			while(it.hasNext() == true){
-				 
-				Midis = Midis + " " + it.next().toString();
-			}
-
-		  return "(" + getClass().getSimpleName() + ":" + marcaId + ":" + idEstacion + ":" + turnoActual + ":" + Midis + ")";
-		}
-
 		public Queue<dir> getCamino() {
 			return camino;
 		}
-
+		
+		/**
+	   	 * Cambia la cola de caminos de la clase Personaje
+	   	 * 
+	   	 * @param camino Nueva cola de tipo dir
+	   	 * 
+	   	 */
 		public void setCamino(Queue<dir> camino) {
 			this.camino = camino;
 		}
-
+		
+		/**
+	   	 * Obtiene la lista de Midi de la clase Personaje
+	   	 * 
+	   	 * @return Lista de tipo Midi
+	   	 * 
+	   	 */
 		public LinkedList<Midi> getPilaMidi() {
 			return pilaMidi;
 		}
-
+		
+		/**
+	   	 * Cambia la lista de Midi de la clase Personaje
+	   	 * 
+	   	 * @param pilaMidi Nueva lista de tipo Midi
+	   	 * 
+	   	 */
 		public void setPilaMidi(LinkedList<Midi> pilaMidi) {
 			this.pilaMidi = pilaMidi;
 		}
 		
-		public void aniadirMidi(Midi midi){
-			
-			pilaMidi.addFirst(midi);
-		}
+		// Metodos PJ
 		
-		public Midi sacarMidi(){
-			
-			return pilaMidi.poll();
-		}
-		
-		public boolean tieneMidis(){
-			return !pilaMidi.isEmpty();
-		}
-		
-		public int cuantosMidis(){
-			return pilaMidi.size();
-		}
-
 		//Halla el camino que tiene que seguir el personaje. Lo implementa cada uno individualmente
 		public abstract void hallarCamino(Galaxia gal);
 		
-		//Convierte un movimiento de una casilla a otra en un Dir
+		/**
+		 * Metodo para convertir un movimiento de una casilla a otra en un tipo dir
+		 * 
+		 * @param origen Casilla de origen
+		 * @param destino Casilla destino
+		 * 
+		 * @return Tipo dir
+		 * 
+		 */
 		public dir interpretarCamino(int origen, int destino){
 			if (origen < destino && origen != destino - 1)
 				return dir.S;
@@ -283,7 +334,13 @@ public abstract class Personaje {
 			return null;
 		}
 		
-		/*
+		/**
+		 * Metodo para convertir un tipo dir a un entero que se adapte a las dimensiones de la Galaxia y seniale la Estacion destino
+		 * 
+		 * @param direccion Tipo dir
+		 * @param ancho Anchura de la Galaxia
+		 * 
+		 * @return Entero que señala la id de la Estacion destino
 		 * 
 		 */
 		private int dirACamino(dir direccion, int ancho){
@@ -307,12 +364,37 @@ public abstract class Personaje {
 			return sig;
 		}
 		
-		//Mueve el personaje
+		/**
+	   	 * Indica si el Personaje puede actuar en el turno actual
+	   	 * 
+	   	 * @return True : si el Personaje puede actuar <br> False : si el Personaje ha de esperar a su turno
+	   	 * 
+	   	 */
+		public boolean esSuTurno(Galaxia gal){
+			
+			boolean turnoPJ = false;
+					
+			if (turnoActual >= turno-1)	// -1 Para que actue en el turno exacto que indica el archivo de config
+			{
+			    turnoPJ = true;
+			}
+			
+			return turnoPJ;
+		}
+		
+		
+		/**
+		 * Metodo para llevar a cabo el movimiento del personaje
+		 * 
+		 * @param gal Nuestra Galaxia
+		 * 
+		 */
 		public void turnoPj(Galaxia gal){
 			
 			setHaMovido(true);
+			turnoActual++;
 			
-			if (gal.getId_salida() == idEstacion)
+			if (gal.getId_salida() == idEstacion)	//Si la estacion en la que se encuentra el pj es la de salida, interactuar con la puerta, y si queda camino, moverse al que indica
 			{
 				tocarPuerta(gal.getPuertaGal());
 			 	if (camino.peek() != null)
@@ -335,5 +417,25 @@ public abstract class Personaje {
 		public abstract void tocarPuerta(Puerta puertaGal);
 		
 		public abstract void tocarMidi(Estacion estacion);
+
+		// To
+		
+		/**
+		 * Muestra la informacion de la clase Personaje
+		 * 
+		 */
+		@Override
+		public String toString() {
+		
+			String Midis = "";
+			Iterator<Midi> it = pilaMidi.iterator();
+			
+			while(it.hasNext() == true){
+				 
+				Midis = Midis + " " + it.next().toString();
+			}
+		
+		  return "(" + getClass().getSimpleName() + ":" + marcaId + ":" + idEstacion + ":" + turnoActual + ":" + Midis + ")";
+		}
  
 }

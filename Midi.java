@@ -62,7 +62,7 @@ public class Midi implements Comparable<Midi> {
 	/**
    	 * Cambia el valor del atributo Id de la clase Midi
    	 * 
-   	 * @param id Nuevo valor
+   	 * @param id Nuevo valor entero
    	 * 
    	 */
 	public void setId (int id){
@@ -104,6 +104,12 @@ public class Midi implements Comparable<Midi> {
 	}
 
 	@Override
+	/**
+   	 * Devuelve el hashCode de un Midi
+   	 * 
+   	 * @return Entero con el valor del hashCode
+   	 * 
+   	 */
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

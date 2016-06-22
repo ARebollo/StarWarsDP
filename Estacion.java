@@ -14,9 +14,8 @@ import java.util.List;
 public class Estacion{
 	
 	private int id;
-	private int frecuencia;
 	private boolean puertaSalida;
-    	private List<Midi> listaMidiEst;
+    private List<Midi> listaMidiEst;
 	private List<Personaje> colaPers;
 	
 	/**
@@ -26,7 +25,6 @@ public class Estacion{
 	Estacion(){
 		
 		id = -1;
-		frecuencia = 0;
 		puertaSalida = false;
 		listaMidiEst = new LinkedList<Midi>();
 		colaPers = new LinkedList<Personaje>();
@@ -37,13 +35,11 @@ public class Estacion{
    	 * Constructor parametrizado de la clase Estacion
    	 * 
    	 * @param id Id de la puerta
-   	 * @param frec Frecuencia de la puerta
    	 * 
    	 */
-	Estacion(int id, int frec){
+	Estacion(int id){
 		
-		this.id = id;
-		frecuencia = frec;	
+		this.id = id;	
 		puertaSalida = false;
 		listaMidiEst = new LinkedList<Midi>();
 		colaPers = new LinkedList<Personaje>();
@@ -54,14 +50,12 @@ public class Estacion{
    	 * Constructor parametrizado de la clase Estacion
    	 * 
    	 * @param id Id de la puerta
-   	 * @param frec Frecuencia de la puerta
    	 * @param puerta Indica si la estacion contiene una puerta (True : la contiene | False : no la contiene)
    	 * 
    	 */
-	Estacion(int id, int frec, boolean puerta){
+	Estacion(int id, boolean puerta){
 		
 		this.id = id;
-		frecuencia = frec;	
 		puertaSalida = puerta;	
 		listaMidiEst = new LinkedList<Midi>();
 		colaPers = new LinkedList<Personaje>();
@@ -77,7 +71,6 @@ public class Estacion{
 	Estacion (Estacion est) {
 		
 		this.id = est.getId();
-		this.frecuencia = est.getFrecuencia();
 		this.puertaSalida = est.isPuertaSalida();
 		this.listaMidiEst = est.listaMidiEst;
 		this.colaPers = est.colaPers;
@@ -87,7 +80,7 @@ public class Estacion{
 	// List
 	
 	/**
-   	 * Metodo para aÃ±adir un Midi a la Estacion, ordenandolos de menor a mayor
+   	 * Metodo para aniadir un Midi a la Estacion, ordenandolos de menor a mayor
    	 * 
    	 * @param midi Objeto de la clase Midi
    	 * 
@@ -121,20 +114,43 @@ public class Estacion{
 		
 	}
 	
+	/**
+   	 * Metodo para obtener y quitar el primer Midi de la lista en la Estacion
+   	 * 
+   	 * @return Objeto de la clase Midi
+   	 * 
+   	 */
 	public Midi sacarMidi(){
 		
 		return listaMidiEst.remove(0);
 	}
 	
+	/**
+   	 * Indica si la Estacion contiene Midi
+   	 * 
+   	 * @return True : si la Estacion contiene algun Midi <br> False : si la Estacion no contiene Midi
+   	 * 
+   	 */
 	public boolean hayMidis(){
 		return !listaMidiEst.isEmpty();
 	}
 	
-	public void aniadirPj(Personaje pj){
-		
+	/**
+   	 * Metodo para añadir un Personaje a la lista de la Estacion
+   	 * 
+   	 * @param pj Objeto de la clase Personaje
+   	 * 
+   	 */
+	public void aniadirPj(Personaje pj){		
 		colaPers.add(pj);
 	}
 	
+	/**
+   	 * Metodo para obtener al primer Personaje que se encuentra en la Estacion
+   	 * 
+   	 * @return Objeto de la clase Personaje
+   	 * 
+   	 */
 	public Personaje mirarPJ(){
 		return colaPers.get(0);
 	}
@@ -158,7 +174,7 @@ public class Estacion{
 	/**
    	 * Metodo para devolver los Midi que tiene la Estacion en forma de String
    	 * 
-   	 * @return String con la lista de Midi de la Estacion
+   	 * @return Cadena con la lista de Midi de la Estacion
    	 * 
    	 */
 	public String mostrarListaStr(){
@@ -174,6 +190,10 @@ public class Estacion{
 	  return a;
 	}
 	
+	/**
+   	 * Muestra la informacion de todos los Personajes que se encuentran en la Estacion
+   	 * 
+   	 */
 	public void mostrarPersonajes(){
 		
 		Iterator<Personaje> it = colaPers.iterator();
@@ -185,6 +205,10 @@ public class Estacion{
 		}
 	}
 	
+	/**
+   	 * Muestra la informacion de los Personajes Imperiales que se encuentran en la Estacion
+   	 * 
+   	 */
 	public void mostrarImperial(){
 		
 		Iterator<Personaje> it = colaPers.iterator();
@@ -201,10 +225,22 @@ public class Estacion{
 		}
 	}
 	
+	/**
+   	 * Indica si la Estacion contiene Personajes
+   	 * 
+   	 * @return True : si la Estacion contiene algun Personaje <br> False : si la Estacion no contiene Personajes
+   	 * 
+   	 */
 	public boolean hayPersonajes(){
 		return !colaPers.isEmpty();
 	}
 	
+	/**
+   	 * Obtiene el numero de Personajes que se encuentran en la lista de la clase Estacion
+   	 * 
+   	 * @return Entero con el numero de Personajes que se encuentran en la Estacion
+   	 * 
+   	 */
 	public int cuantosPJ(){
 		return colaPers.size();
 	}
@@ -214,7 +250,7 @@ public class Estacion{
 	/**
    	 * Obtiene el atributo Id de la clase Estacion
    	 * 
-   	 * @return Id de la Estacion
+   	 * @return Entero con la id de la Estacion
    	 * 
    	 */
 	public int getId() {
@@ -224,7 +260,7 @@ public class Estacion{
 	/**
    	 * Cambia el valor del atributo Id de la clase Estacion
    	 * 
-   	 * @param id Nuevo valor
+   	 * @param id Nuevo valor entero
    	 * 
    	 */
 	public void setId(int id) {
@@ -232,25 +268,45 @@ public class Estacion{
 	}
 	
 	/**
-   	 * Obtiene el atributo Frecuencia de la clase Estacion
+   	 * Obtiene la lista de Midi de la clase Estacion
    	 * 
-   	 * @return Frecuencia de la Estacion
+   	 * @return Lista de tipo Midi
    	 * 
    	 */
-	public int getFrecuencia() {
-		return frecuencia;
+	public List<Midi> getListaMidiEst() {
+		return listaMidiEst;
 	}
 	
 	/**
-   	 * Cambia el valor del atributo Frecuencia de la clase Estacion
+   	 * Cambia la lista de Midi de la clase Estacion
    	 * 
-   	 * @param frecuencia Nuevo valor
+   	 * @param listaMidiEst Nueva lista de tipo Midi
    	 * 
    	 */
-	public void setFrecuencia(int frecuencia) {
-		this.frecuencia = frecuencia;
+	public void setListaMidiEst(List<Midi> listaMidiEst) {
+		this.listaMidiEst = listaMidiEst;
 	}
 	
+	/**
+   	 * Obtiene la lista de Personajes de la clase Estacion
+   	 * 
+   	 * @return Lista de tipo Personaje
+   	 * 
+   	 */
+	public List<Personaje> getColaPers() {
+		return colaPers;
+	}
+	
+	/**
+   	 * Cambia la lista de Personajes de la clase Estacion
+   	 * 
+   	 * @param colaPers Nueva lista de tipo Personaje
+   	 * 
+   	 */
+	public void setColaPers(List<Personaje> colaPers) {
+		this.colaPers = colaPers;
+	}
+
 	/**
    	 * Indica si la Estacion contiene una puerta de salida
    	 * 
@@ -270,7 +326,6 @@ public class Estacion{
 	public void setPuertaSalida(boolean puertaSalida) {
 		this.puertaSalida = puertaSalida;
 	}
-
 	
 	/**
    	 * Cambia el valor del booleano haMovido de cada Personaje que se encuentra en la estacion a False
@@ -289,7 +344,7 @@ public class Estacion{
 	}
 	
 	/**
-   	 * Llama al metodo turnoPj de cada  de cada Personaje que se encuentra en la estacion y no haya realizado su turno
+   	 * Llama al metodo turnoPj de cada Personaje que se encuentra en la estacion y no haya realizado su turno
    	 * 
    	 * @param gal Nuestra Galaxia
    	 * 
@@ -304,10 +359,15 @@ public class Estacion{
 			
 			persAux = colaPers.remove(0);
 			
-			if (persAux.isHaMovido() == false)
+			if (persAux.isHaMovido() == false && persAux.esSuTurno(gal) == true)
 				persAux.turnoPj(gal);
-			else
+			else if (persAux.isHaMovido() == true)
 				colaPers.add(persAux);
+			else {
+				colaPers.add(persAux);
+				persAux.setTurnoActual(persAux.getTurnoActual() + 1);	// Para que no se mueva antes de tiempo, es decir turno < turnoActual
+			}
+			
 			fin = gal.finJuego();
 		}
 		return fin;
@@ -321,23 +381,7 @@ public class Estacion{
    	 */
 	@Override
 	public String toString() {
-		return "Estacion [id=" + id + ", frecuencia=" + frecuencia + "]";
-	}
-	
-	public List<Midi> getListaMidiEst() {
-		return listaMidiEst;
-	}
-
-	public void setListaMidiEst(List<Midi> listaMidiEst) {
-		this.listaMidiEst = listaMidiEst;
-	}
-
-	public List<Personaje> getColaPers() {
-		return colaPers;
-	}
-
-	public void setColaPers(List<Personaje> colaPers) {
-		this.colaPers = colaPers;
+		return "Estacion [id=" + id + "]";
 	}
 
 }

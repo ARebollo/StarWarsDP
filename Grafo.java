@@ -1,6 +1,5 @@
 package DEV;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -70,7 +69,7 @@ public class Grafo {
    	* 
    	* @param alto Altura de la galaxia
    	* @param ancho Anchura de la galaxia
-   	* @param puertaGal id Estacion de salida
+   	* @param puertaGal id de la Estacion con la Puerta de salida
    	* 
    	*/
     Grafo(int alto, int ancho, int puertaGal){
@@ -389,14 +388,14 @@ public class Grafo {
           return sig;
       }
       
-	     /**
-	      * Metodo que almacena las paredes adyacentes de cada nodo, siguiendo el orden N-E-S-O
-	      * 
-	      * @param ancho Anchura de la galaxia
-	      * 
-	      * @return LinkedList con parejas de enteros
-	      * 
-	      */  
+	 /**
+	  * Metodo que almacena las paredes adyacentes de cada nodo, siguiendo el orden N-E-S-O
+	  * 
+	  * @param ancho Anchura de la galaxia
+	  * 
+	  * @return LinkedList con parejas de enteros
+	  * 
+	  */  
 	  private LinkedList<Pair<Integer,Integer>> almacenarParedesPair(int ancho){
 			
 		  LinkedList<Pair<Integer,Integer>> listaParedes = new LinkedList<Pair<Integer,Integer>>();	
@@ -466,10 +465,16 @@ public class Grafo {
      	 	 
        }
       
+     /**
+   	  * Metodo para manejar los metodos relacionados con la eliminacion de paredes de manera sencilla
+   	  * 
+   	  * @param ancho Anchura de la galaxia
+   	  * @param semilla Semilla para el generador de numeros aleatorios
+   	  * 
+   	  */ 
       public void procesarParedes(int ancho, long semilla){
     	  
-    	  tirarParedesPair(almacenarParedesPair(ancho), semilla);
-    	  
+    	  tirarParedesPair(almacenarParedesPair(ancho), semilla); 	  
       }
       
      /**
@@ -518,7 +523,7 @@ public class Grafo {
       * @param j El nodo fin
       * @param ancho Anchura de la galaxia
       * 
-      * @return El camino seguido en forma de Lista de enteros
+      * @return Devuelve el camino seguido en forma de lista de enteros
       * 
       */
       public List<Integer> manoDerecha (int i, int j, int ancho){
@@ -748,9 +753,9 @@ public class Grafo {
       }
     
     /**
-     * Metodo que devuelve los arcos que existen en el tablero de la galaxia en forma de un vector de enteros
+     * Metodo que devuelve los arcos que existen en el tablero de la galaxia en forma de una lista de pares
      *
-     * @return Vector de enteros con la id de los nodos que forman arcos (a pares)
+     * @return Lista de pares con la id de los nodos que forman arcos
      * 
      */
     public List<Pair<Integer,Integer>> devolverArcos(){
@@ -769,43 +774,25 @@ public class Grafo {
     	}
       return listaArcos; 
     }
-
+    
+    /**
+   	 * Obtiene el numero de nodos de la clase Grafo
+   	 * 
+   	 * @return Entero con el numero de nodos totales
+   	 * 
+   	 */
 	public int getNumNodos() {
 		return numNodos;
 	}
-
+	
+	/**
+   	 * Cambia el valor del atributo numNodos de la clase Grafo
+   	 * 
+   	 * @param numNodos Nuevo valor entero
+   	 * 
+   	 */
 	public void setNumNodos(int numNodos) {
 		this.numNodos = numNodos;
-	}
-	
-	public static void main(String[] args) {
-
-		Grafo pepe = new Grafo (4,4,5);
-		
-		pepe.procesarParedes(4, 33);
-		pepe.mostrarNodos();
-		pepe.mostrarArcos();
-		
-		
-		System.out.println(pepe.devolverArcos().size());
-		Iterator<Pair<Integer,Integer>> it = pepe.devolverArcos().iterator();
-		
-		while (it.hasNext()){
-				
-		System.out.println(it.next());
-		}
-		
-		List<Integer> lista = new LinkedList<Integer>();
-		
-		lista = pepe.manoDerecha(12, 15, 4);
-		
-		Iterator<Integer> it2 = lista.iterator();
-		
-		while (it2.hasNext()){
-			
-			System.out.println(it2.next());
-		}
-		
 	}
 	
 }
